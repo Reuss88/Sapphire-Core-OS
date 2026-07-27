@@ -1,0 +1,7 @@
+{
+  "register": "Business Object Type Register",
+  "architectureVersion": "0.91",
+  "status": "foundation",
+  "provenance": "Initial Phase 2 canonical register. Domain object types are added in later modules.",
+  "types": []
+}
