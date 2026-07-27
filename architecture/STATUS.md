@@ -3,19 +3,20 @@
 ## Current version
 
 - Architecture version: **SCA v0.91**
-- Repository consolidation branch: `sca/v0.91-architecture-consolidation`
-- Current module: **Module 8 — Decision, Authority & Approval Architecture**
-- Current pass: **Pass 2 — Authority Architecture completed**
-- Next pass: **Pass 3 — Approval Architecture**
+- Current implementation phase: **Phase 3 — Relationship Foundation completed**
+- Next implementation phase: **Phase 4 — Lifecycle Foundation**
+- Current architecture-design module: **Module 8 — Decision, Authority & Approval Architecture**
+- Current design pass: **Pass 2 — Authority Architecture completed**
+- Next design pass: **Pass 3 — Approval Architecture**
 
 ## Status by architecture area
 
 | Architecture area | Status |
 |---|---|
 | Enterprise Constitution | Foundational principles locked; full normative consolidation pending |
-| Business Object Architecture | Locked |
-| Relationship Architecture | Locked |
-| Lifecycle & State Architecture | Locked |
+| Business Object Architecture | Locked; Phase 2 implementation foundation complete |
+| Relationship Architecture | Locked; Phase 3 implementation foundation complete |
+| Lifecycle & State Architecture | Locked; implementation foundation next |
 | Workflow & Orchestration Architecture | Locked |
 | Decision, Authority & Approval | In design — Passes 1 and 2 complete |
 | Policy, Risk, Control & Compliance | Planned |
@@ -37,6 +38,13 @@
 - WS-002 — Workflow Pattern Library
 - WS-003 — Workflow Runtime Object Register
 - WS-004 — Workflow Conformance Checklist
+
+## Implementation standards added
+
+- RS-001 — Relationship Standard
+- RS-002 — Relationship Pattern Library
+- RS-003 — Relationship Runtime Object Register
+- RS-004 — Relationship Conformance Checklist
 
 ## Important provenance note
 
