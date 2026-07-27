@@ -1,0 +1,340 @@
+name: Phase 4 Validation
+
+on:
+  push:
+    branches:
+      - 'sca/phase-04-lifecycle-foundation'
+  pull_request:
+    branches:
+      - 'main'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  validate:
+    name: Phase 4 validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node (for tools)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Ensure psql client available
+        run: |
+          if ! command -v psql >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
+          fi
+          psql --version
+
+      - name: Repository integrity - list migrations
+        id: migration-list
+        run: |
+          echo "Listing supabase/migrations"
+          if [ -d supabase/migrations ]; then
+            ls -1 supabase/migrations | sort > migrations_sorted.txt
+            cat migrations_sorted.txt
+          else
+            echo "No supabase/migrations directory found"; exit 1
+          fi
+
+      - name: Repository integrity - check migration timestamps
+        id: migration-order
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+import os,sys
+p='supabase/migrations'
+if not os.path.isdir(p):
+    print('FAIL: migrations directory not found')
+    sys.exit(2)
+files=sorted(os.listdir(p))
+prev=None
+for fn in files:
+    try:
+        ts=int(fn.split('_')[0])
+    except Exception as e:
+        print('FAIL: invalid migration filename (missing leading timestamp):',fn)
+        sys.exit(2)
+    if prev is not None and ts<=prev:
+        print('FAIL: migration timestamps not strictly increasing:',prev,'>=',ts)
+        sys.exit(2)
+    prev=ts
+print('PASS: migrations ordered')
+PY
+
+      - name: Repository integrity - detect unresolved merge markers
+        id: merge-markers
+        run: |
+          if grep -R -n -E '^(<<<<<<<|>>>>>>>|=======$)' --exclude-dir=.git --binary-files=without-match . ; then
+            echo "Merge conflict markers found"; exit 2
+          else
+            echo "No merge conflict markers found"
+          fi
+
+      - name: Repository integrity - validate JSON files
+        id: json-validate
+        run: |
+          set -e
+          if ! command -v jq >/dev/null; then
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+          found=0
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            echo "Validating $f"
+            jq -e . "$f" >/dev/null || { echo "Invalid JSON: $f"; exit 2; }
+            found=1
+          done < <(git ls-files '*.json' || true)
+          if [ "$found" -eq 0 ]; then
+            echo "No JSON files found to validate"
+          fi
+
+      - name: Detect whether Supabase CLI is required
+        id: supabase-detect
+        run: |
+          set -e
+          if git ls-files | grep -qE '^supabase/'; then
+            echo "supabase_required=true" >> $GITHUB_OUTPUT
+          else
+            echo "supabase_required=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Supabase CLI (official action)
+        if: steps.supabase-detect.outputs.supabase_required == 'true'
+        uses: supabase/setup-cli@v2
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Start local Supabase stack
+        if: steps.supabase-detect.outputs.supabase_required == 'true'
+        id: supabase-start
+        run: |
+          set -eux
+          if command -v supabase >/dev/null; then
+            echo "Starting local Supabase stack (required for DB validations)"
+            supabase start --no-telemetry
+          else
+            echo "Supabase CLI not installed; failing because DB validations require local stack"
+            exit 3
+          fi
+
+      - name: Apply migrations locally
+        if: steps.supabase-detect.outputs.supabase_required == 'true'
+        id: apply-migrations
+        run: |
+          set -eux
+          if command -v supabase >/dev/null; then
+            # Reset local DB and apply migrations locally (local reset compiles and applies migrations)
+            supabase db reset --local
+          else
+            echo "supabase CLI not installed; cannot apply migrations"; exit 4
+          fi
+
+      - name: Derive Postgres connection details from supabase status
+        if: steps.supabase-detect.outputs.supabase_required == 'true'
+        id: derive-db
+        run: |
+          set -euo pipefail
+          STATUS_OUT="$(supabase status 2>/dev/null || true)"
+          # store status output for local debug only (not uploaded as artifact)
+          echo "$STATUS_OUT" > supabase_status.txt
+          DB_URL="$(printf '%s\n' "$STATUS_OUT" | grep -Eo 'postgres://[^[:space:]]+' | head -n1 || true)"
+          if [ -n "$DB_URL" ]; then
+            DB_URL="$DB_URL" python3 - <<'PY'
+import os,urllib.parse as up
+url = os.environ.get('DB_URL')
+p = up.urlparse(url)
+user = p.username or 'postgres'
+pw = p.password or ''
+host = p.hostname or 'localhost'
+port = p.port or 5432
+dbname = p.path.lstrip('/') or 'postgres'
+# write exports to a temp script for immediate sourcing
+with open('/tmp/pg_env.sh','w') as f:
+    f.write(f'export PGUSER="{user}"\n')
+    f.write(f'export PGPASSWORD="{pw}"\n')
+    f.write(f'export PGHOST="{host}"\n')
+    f.write(f'export PGPORT="{port}"\n')
+    f.write(f'export PGDATABASE="{dbname}"\n')
+# append to GITHUB_ENV so later steps have the variables
+with open(os.environ['GITHUB_ENV'],'a') as gh:
+    gh.write(f'PGUSER={user}\n')
+    gh.write(f'PGPASSWORD={pw}\n')
+    gh.write(f'PGHOST={host}\n')
+    gh.write(f'PGPORT={port}\n')
+    gh.write(f'PGDATABASE={dbname}\n')
+PY
+            chmod +x /tmp/pg_env.sh
+            . /tmp/pg_env.sh
+            psql -h "${PGHOST}" -p "${PGPORT}" -U "${PGUSER}" -d "${PGDATABASE}" -c '\l' || { echo "Cannot connect to Postgres at ${PGHOST}:${PGPORT} with parsed DB_URL"; exit 5; }
+          else
+            # Fallback to common local Supabase defaults
+            PGHOST=localhost
+            PGPORT=54322
+            PGUSER=postgres
+            PGPASSWORD=postgres
+            PGDATABASE=postgres
+            # persist to GITHUB_ENV
+            echo "PGHOST=${PGHOST}" >> $GITHUB_ENV
+            echo "PGPORT=${PGPORT}" >> $GITHUB_ENV
+            echo "PGUSER=${PGUSER}" >> $GITHUB_ENV
+            echo "PGPASSWORD=${PGPASSWORD}" >> $GITHUB_ENV
+            echo "PGDATABASE=${PGDATABASE}" >> $GITHUB_ENV
+            export PGHOST PGPORT PGUSER PGPASSWORD PGDATABASE
+            psql -h "${PGHOST}" -p "${PGPORT}" -U "${PGUSER}" -d "${PGDATABASE}" -c '\l' || { echo "Cannot connect to Postgres at ${PGHOST}:${PGPORT} (fallback)"; exit 5; }
+          fi
+
+      - name: Run architecture SQL tests (explicit connection)
+        if: steps.supabase-detect.outputs.supabase_required == 'true'
+        id: run-sql-tests
+        run: |
+          set -euo pipefail
+          echo "Running SQL architecture tests using explicit connection parameters"
+          shopt -s nullglob
+          found=0
+          for t in tests/architecture/*.sql; do
+            if [ -f "$t" ]; then
+              found=1
+              echo "Running $t"
+              psql "postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}" -v ON_ERROR_STOP=1 -f "$t"
+            fi
+          done
+          if [ "$found" -eq 0 ]; then
+            echo "No SQL architecture tests found"; exit 2
+          fi
+
+      - name: CodeQL init (static analysis)
+        id: codeql-init
+        uses: github/codeql-action/init@v4
+        with:
+          languages: javascript
+
+      - name: Detect package workspace structure and run build/typecheck
+        id: workspace-build
+        run: |
+          set -euo pipefail
+          # Decide whether the repository uses a root workspace
+          if [ -f package.json ]; then
+            if command -v jq >/dev/null; then
+              has_workspaces=$(jq -r 'has("workspaces") or (.workspaces != null)' package.json 2>/dev/null || echo "false")
+            else
+              has_workspaces=false
+            fi
+            if [ "$has_workspaces" = "true" ]; then
+              echo "Detected root workspace definition; installing and building at root"
+              if [ -f package-lock.json ]; then
+                npm ci
+              elif [ -f yarn.lock ]; then
+                corepack enable && corepack prepare yarn@stable --activate
+                yarn install --frozen-lockfile
+              elif [ -f pnpm-lock.yaml ]; then
+                corepack enable && corepack prepare pnpm@latest --activate
+                pnpm install
+              else
+                npm install
+              fi
+              if npm run | grep -q "typecheck"; then
+                npm run typecheck
+              elif npm run | grep -q "build"; then
+                npm run build
+              else
+                echo "No typecheck/build script found at repository root"; exit 2
+              fi
+              exit 0
+            fi
+          fi
+          # No root workspace detected – discover package.json files and build each package
+          mapfile -t pkgs < <(git ls-files -- '*/package.json' 'package.json' || true)
+          if [ ${#pkgs[@]} -eq 0 ]; then
+            echo "No package.json files found; skipping TypeScript build"
+            exit 0
+          fi
+          echo "Found package manifests:"; printf '%s\n' "${pkgs[@]}"
+          for p in "${pkgs[@]}"; do
+            dir=$(dirname "$p")
+            echo "Processing package at: $dir"
+            pushd "$dir"
+            if [ -f package-lock.json ]; then
+              npm ci
+            elif [ -f yarn.lock ]; then
+              corepack enable && corepack prepare yarn@stable --activate
+              yarn install --frozen-lockfile
+            elif [ -f pnpm-lock.yaml ]; then
+              corepack enable && corepack prepare pnpm@latest --activate
+              pnpm install
+            else
+              npm install
+            fi
+            if npm run | grep -q "typecheck"; then
+              npm run typecheck
+            elif npm run | grep -q "build"; then
+              npm run build
+            else
+              echo "No typecheck/build scripts found in $dir/package.json"; exit 2
+            fi
+            popd
+          done
+
+      - name: Lint & format (per-package)
+        id: lint-format
+        run: |
+          set -euo pipefail
+          mapfile -t pkgs < <(git ls-files -- '*/package.json' 'package.json' || true)
+          if [ ${#pkgs[@]} -eq 0 ]; then
+            echo "No package.json files found; skipping lint/format"
+            exit 0
+          fi
+          for p in "${pkgs[@]}"; do
+            dir=$(dirname "$p")
+            echo "Lint/format for: $dir"
+            pushd "$dir"
+            if npm run | grep -q "lint"; then
+              npm run lint
+            else
+              echo "No lint script in $dir/package.json; skipping"
+            fi
+            if npm run | grep -q "format"; then
+              npm run format -- --check
+            else
+              echo "No format script in $dir/package.json; skipping"
+            fi
+            popd
+          done
+
+      - name: Run CodeQL analysis (after build)
+        id: codeql-analyze
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: 'security'
+
+      - name: Secret scanning
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup Supabase (stop)
+        if: always()
+        run: |
+          if command -v supabase >/dev/null; then
+            supabase stop || echo "supabase stop failed or was not running"
+          fi
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-04-validation-logs
+          path: |
+            migrations_sorted.txt
