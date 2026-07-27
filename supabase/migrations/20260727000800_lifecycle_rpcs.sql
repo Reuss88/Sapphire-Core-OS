@@ -171,31 +171,32 @@ security definer
 as $$
 declare
   v_instance_id uuid;
-  v_initial_state text;
+  v_initial_state_key text;
+  v_initial_state_id uuid;
 begin
   if p_organisation_id is null then
     raise exception 'organisation_id is required';
   end if;
 
-  select key into v_initial_state
+  select key into v_initial_state_key
   from sca_meta.lifecycle_state_definition
   where lifecycle_definition_version_id = p_lifecycle_definition_version_id
   order by position asc
   limit 1;
 
-  if v_initial_state is null then
+  if v_initial_state_key is null then
     raise exception 'lifecycle version has no state definitions';
   end if;
 
   insert into sca_core.lifecycle_instance (organisation_id, object_type, object_id, lifecycle_definition_version_id, current_state_key, created_by)
-  values (p_organisation_id, lower(trim(p_object_type)), p_object_id, p_lifecycle_definition_version_id, v_initial_state, p_actor_id)
+  values (p_organisation_id, lower(trim(p_object_type)), p_object_id, p_lifecycle_definition_version_id, v_initial_state_key, p_actor_id)
   returning id into v_instance_id;
 
   insert into sca_core.lifecycle_state_instance (lifecycle_instance_id, state_key, effective_from, recorded_by)
-  values (v_instance_id, v_initial_state, now(), p_actor_id)
-  returning id into v_initial_state;
+  values (v_instance_id, v_initial_state_key, now(), p_actor_id)
+  returning id into v_initial_state_id;
 
-  update sca_core.lifecycle_instance set current_state_instance_id = v_initial_state where id = v_instance_id;
+  update sca_core.lifecycle_instance set current_state_instance_id = v_initial_state_id where id = v_instance_id;
 
   return v_instance_id;
 end;
@@ -223,9 +224,23 @@ begin
     end if;
   end if;
 
-  insert into sca_core.lifecycle_transition_request (request_id, lifecycle_instance_id, requested_transition_key, requested_by, requested_at, desired_effective_from, expected_current_state_instance_id)
-  values (p_request_id, p_lifecycle_instance_id, lower(trim(p_requested_transition_key)), p_requested_by, now(), p_desired_effective_from, p_expected_current_state_instance_id)
-  returning id into v_id;
+  insert into sca_core.lifecycle_transition_request (
+    request_id,
+    lifecycle_instance_id,
+    requested_transition_key,
+    requested_by,
+    requested_at,
+    desired_effective_from,
+    expected_current_state_instance_id
+  ) values (
+    p_request_id,
+    p_lifecycle_instance_id,
+    lower(trim(p_requested_transition_key)),
+    p_requested_by,
+    now(),
+    p_desired_effective_from,
+    p_expected_current_state_instance_id
+  ) returning id into v_id;
 
   return v_id;
 end;
@@ -267,7 +282,9 @@ declare
   v_eval record;
   v_instance record;
   v_current_state_instance record;
-  v_transition_def record;
+  v_transition_ldv record;
+  v_to_state_key text;
+  v_new_state_instance_id uuid;
   v_event_id uuid;
 begin
   -- lock request
@@ -314,12 +331,13 @@ begin
     end if;
   end if;
 
-  -- ensure lifecycle definition version exists and is published
-  select ldv.* into v_transition_def
+  -- ensure lifecycle definition version exists and is published and the transition definition exists for it
+  select ldv.* into v_transition_ldv
   from sca_meta.lifecycle_definition_version ldv
   join sca_meta.lifecycle_transition_definition ltd on ltd.lifecycle_definition_version_id = ldv.id
   where ltd.key = v_req.requested_transition_key
     and ldv.id = v_instance.lifecycle_definition_version_id
+    and ldv.published = true
   limit 1;
 
   if not found then
@@ -337,12 +355,12 @@ begin
   end if;
 
   -- determine to_state from transition definition
-  select to_state_key into v_transition_def from sca_meta.lifecycle_transition_definition
+  select to_state_key into v_to_state_key from sca_meta.lifecycle_transition_definition
   where lifecycle_definition_version_id = v_instance.lifecycle_definition_version_id
     and key = v_req.requested_transition_key
   limit 1;
 
-  if v_transition_def.to_state_key is null then
+  if v_to_state_key is null then
     raise exception 'to_state not found for transition';
   end if;
 
@@ -353,17 +371,17 @@ begin
 
   -- create new state instance
   insert into sca_core.lifecycle_state_instance (lifecycle_instance_id, state_key, effective_from, recorded_by)
-  values (v_instance.id, v_transition_def.to_state_key, coalesce(v_req.desired_effective_from, now()), p_executor_id)
-  returning id into v_event_id; -- reuse variable for new state_instance id
+  values (v_instance.id, v_to_state_key, coalesce(v_req.desired_effective_from, now()), p_executor_id)
+  returning id into v_new_state_instance_id;
 
   -- create transition event
   insert into sca_core.lifecycle_transition_event (transition_request_id, lifecycle_instance_id, from_state_key, to_state_key, executed_by, executed_at, effective_from, event_data)
-  values (p_transition_request_id, v_instance.id, v_current_state_instance.state_key, v_transition_def.to_state_key, p_executor_id, now(), coalesce(v_req.desired_effective_from, now()), jsonb_build_object('evaluation_id', v_eval.id))
+  values (p_transition_request_id, v_instance.id, v_current_state_instance.state_key, v_to_state_key, p_executor_id, now(), coalesce(v_req.desired_effective_from, now()), jsonb_build_object('evaluation_id', v_eval.id))
   returning id into v_event_id;
 
   -- update lifecycle instance state pointers
   update sca_core.lifecycle_instance
-    set current_state_key = v_transition_def.to_state_key,
+    set current_state_key = v_to_state_key,
         current_state_instance_id = (select id from sca_core.lifecycle_state_instance where lifecycle_instance_id = v_instance.id and effective_to is null),
         updated_at = now(),
         updated_by = p_executor_id
