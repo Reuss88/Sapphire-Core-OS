@@ -1,0 +1,8 @@
+{
+  "register": "Relationship Type Register",
+  "architectureVersion": "0.91",
+  "schemaVersion": "1.0",
+  "status": "foundation",
+  "provenance": "Initial Phase 3 canonical register. Domain relationship types are added only through approved domain modules.",
+  "types": []
+}
