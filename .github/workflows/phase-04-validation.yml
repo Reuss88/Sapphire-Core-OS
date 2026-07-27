@@ -54,25 +54,25 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-import os,sys
-p='supabase/migrations'
-if not os.path.isdir(p):
-    print('FAIL: migrations directory not found')
-    sys.exit(2)
-files=sorted(os.listdir(p))
-prev=None
-for fn in files:
-    try:
-        ts=int(fn.split('_')[0])
-    except Exception as e:
-        print('FAIL: invalid migration filename (missing leading timestamp):',fn)
-        sys.exit(2)
-    if prev is not None and ts<=prev:
-        print('FAIL: migration timestamps not strictly increasing:',prev,'>=',ts)
-        sys.exit(2)
-    prev=ts
-print('PASS: migrations ordered')
-PY
+          import os,sys
+          p='supabase/migrations'
+          if not os.path.isdir(p):
+              print('FAIL: migrations directory not found')
+              sys.exit(2)
+          files=sorted(os.listdir(p))
+          prev=None
+          for fn in files:
+              try:
+                  ts=int(fn.split('_')[0])
+              except Exception as e:
+                  print('FAIL: invalid migration filename (missing leading timestamp):',fn)
+                  sys.exit(2)
+              if prev is not None and ts<=prev:
+                  print('FAIL: migration timestamps not strictly increasing:',prev,'>=',ts)
+                  sys.exit(2)
+              prev=ts
+          print('PASS: migrations ordered')
+          PY
 
       - name: Repository integrity - detect unresolved merge markers
         id: merge-markers
@@ -153,29 +153,29 @@ PY
           DB_URL="$(printf '%s\n' "$STATUS_OUT" | grep -Eo 'postgres://[^[:space:]]+' | head -n1 || true)"
           if [ -n "$DB_URL" ]; then
             DB_URL="$DB_URL" python3 - <<'PY'
-import os,urllib.parse as up
-url = os.environ.get('DB_URL')
-p = up.urlparse(url)
-user = p.username or 'postgres'
-pw = p.password or ''
-host = p.hostname or 'localhost'
-port = p.port or 5432
-dbname = p.path.lstrip('/') or 'postgres'
-# write exports to a temp script for immediate sourcing
-with open('/tmp/pg_env.sh','w') as f:
-    f.write(f'export PGUSER="{user}"\n')
-    f.write(f'export PGPASSWORD="{pw}"\n')
-    f.write(f'export PGHOST="{host}"\n')
-    f.write(f'export PGPORT="{port}"\n')
-    f.write(f'export PGDATABASE="{dbname}"\n')
-# append to GITHUB_ENV so later steps have the variables
-with open(os.environ['GITHUB_ENV'],'a') as gh:
-    gh.write(f'PGUSER={user}\n')
-    gh.write(f'PGPASSWORD={pw}\n')
-    gh.write(f'PGHOST={host}\n')
-    gh.write(f'PGPORT={port}\n')
-    gh.write(f'PGDATABASE={dbname}\n')
-PY
+            import os,urllib.parse as up
+            url = os.environ.get('DB_URL')
+            p = up.urlparse(url)
+            user = p.username or 'postgres'
+            pw = p.password or ''
+            host = p.hostname or 'localhost'
+            port = p.port or 5432
+            dbname = p.path.lstrip('/') or 'postgres'
+            # write exports to a temp script for immediate sourcing
+            with open('/tmp/pg_env.sh','w') as f:
+                f.write(f'export PGUSER="{user}"\n')
+                f.write(f'export PGPASSWORD="{pw}"\n')
+                f.write(f'export PGHOST="{host}"\n')
+                f.write(f'export PGPORT="{port}"\n')
+                f.write(f'export PGDATABASE="{dbname}"\n')
+            # append to GITHUB_ENV so later steps have the variables
+            with open(os.environ['GITHUB_ENV'],'a') as gh:
+                gh.write(f'PGUSER={user}\n')
+                gh.write(f'PGPASSWORD={pw}\n')
+                gh.write(f'PGHOST={host}\n')
+                gh.write(f'PGPORT={port}\n')
+                gh.write(f'PGDATABASE={dbname}\n')
+            PY
             chmod +x /tmp/pg_env.sh
             . /tmp/pg_env.sh
             psql -h "${PGHOST}" -p "${PGPORT}" -U "${PGUSER}" -d "${PGDATABASE}" -c '\l' || { echo "Cannot connect to Postgres at ${PGHOST}:${PGPORT} with parsed DB_URL"; exit 5; }
