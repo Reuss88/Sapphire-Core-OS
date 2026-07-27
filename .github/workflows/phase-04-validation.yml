@@ -124,7 +124,7 @@ jobs:
           set -eux
           if command -v supabase >/dev/null; then
             echo "Starting local Supabase stack (required for DB validations)"
-            supabase start --no-telemetry
+            supabase start 
           else
             echo "Supabase CLI not installed; failing because DB validations require local stack"
             exit 3
