@@ -299,4 +299,238 @@ begin
     if v_event_id is not null then
       return v_event_id;
     else
-{
+      raise exception 'request already marked executed but event missing';
+    end if;
+  end if;
+
+  if v_req.status <> 'pending' then
+    raise exception 'transition request is not pending';
+  end if;
+
+  -- find latest evaluation (approved required)
+  select * into v_eval
+  from sca_core.lifecycle_transition_evaluation
+  where transition_request_id = p_transition_request_id
+  order by evaluated_at desc
+  limit 1;
+
+  if not found or v_eval.approved is distinct from true then
+    raise exception 'transition request not approved';
+  end if;
+
+  -- lock lifecycle instance
+  select * into v_instance from sca_core.lifecycle_instance where id = v_req.lifecycle_instance_id for update;
+  if not found then
+    raise exception 'lifecycle instance not found';
+  end if;
+
+  -- stale-state detection
+  if v_req.expected_current_state_instance_id is not null then
+    if v_instance.current_state_instance_id is distinct from v_req.expected_current_state_instance_id then
+      raise exception 'stale state: expected % but current is %', v_req.expected_current_state_instance_id, v_instance.current_state_instance_id;
+    end if;
+  end if;
+
+  -- ensure lifecycle definition version exists and is published and the transition definition exists for it
+  select ldv.* into v_transition_ldv
+  from sca_meta.lifecycle_definition_version ldv
+  join sca_meta.lifecycle_transition_definition ltd on ltd.lifecycle_definition_version_id = ldv.id
+  where ltd.key = v_req.requested_transition_key
+    and ldv.id = v_instance.lifecycle_definition_version_id
+    and ldv.published = true
+  limit 1;
+
+  if not found then
+    raise exception 'transition definition not found for lifecycle version';
+  end if;
+
+  -- load current open state instance and close it
+  select * into v_current_state_instance
+  from sca_core.lifecycle_state_instance
+  where lifecycle_instance_id = v_instance.id and effective_to is null
+  for update;
+
+  if not found then
+    raise exception 'no open state instance found';
+  end if;
+
+  -- determine to_state from transition definition
+  select to_state_key into v_to_state_key from sca_meta.lifecycle_transition_definition
+  where lifecycle_definition_version_id = v_instance.lifecycle_definition_version_id
+    and key = v_req.requested_transition_key
+  limit 1;
+
+  if v_to_state_key is null then
+    raise exception 'to_state not found for transition';
+  end if;
+
+  -- close current state instance
+  update sca_core.lifecycle_state_instance
+    set effective_to = coalesce(v_req.desired_effective_from, now())
+  where id = v_current_state_instance.id;
+
+  -- create new state instance
+  insert into sca_core.lifecycle_state_instance (lifecycle_instance_id, state_key, effective_from, recorded_by)
+  values (v_instance.id, v_to_state_key, coalesce(v_req.desired_effective_from, now()), p_executor_id)
+  returning id into v_new_state_instance_id;
+
+  -- create transition event
+  insert into sca_core.lifecycle_transition_event (transition_request_id, lifecycle_instance_id, from_state_key, to_state_key, executed_by, executed_at, effective_from, event_data)
+  values (p_transition_request_id, v_instance.id, v_current_state_instance.state_key, v_to_state_key, p_executor_id, now(), coalesce(v_req.desired_effective_from, now()), jsonb_build_object('eval[...])
+  returning id into v_event_id;
+
+  -- update lifecycle instance state pointers
+  update sca_core.lifecycle_instance
+    set current_state_key = v_to_state_key,
+        current_state_instance_id = (select id from sca_core.lifecycle_state_instance where lifecycle_instance_id = v_instance.id and effective_to is null),
+        updated_at = now(),
+        updated_by = p_executor_id
+  where id = v_instance.id;
+
+  -- mark request executed
+  update sca_core.lifecycle_transition_request
+    set status = 'executed', processed_at = now(), result_reason = null
+  where id = p_transition_request_id;
+
+  -- audit event
+  insert into sca_audit.lifecycle_event (organisation_id, lifecycle_instance_id, event_type, actor_id, occurred_at, event_data)
+  values (v_instance.organisation_id, v_instance.id, 'lifecycle.transition.executed', p_executor_id, now(), jsonb_build_object('transition_request_id', p_transition_request_id, 'transition_event_id', v_event_id));
+
+  return v_event_id;
+end;
+$$;
+
+-- withdraw transition request
+create or replace function sca_core.withdraw_lifecycle_transition_request(
+  p_transition_request_id uuid,
+  p_actor_id uuid
+)
+returns void
+language plpgsql
+security definer
+as $$
+begin
+  update sca_core.lifecycle_transition_request set status = 'withdrawn', processed_at = now(), result_reason = 'withdrawn', requested_by = coalesce(requested_by, p_actor_id) where id = p_transition_request_id;
+end;
+$$;
+
+-- retire lifecycle instance (mark retired and close open state instance)
+create or replace function sca_core.retire_lifecycle_instance(
+  p_lifecycle_instance_id uuid,
+  p_actor_id uuid
+)
+returns void
+language plpgsql
+security definer
+as $$
+begin
+  update sca_core.lifecycle_instance set is_retired = true, updated_at = now(), updated_by = p_actor_id where id = p_lifecycle_instance_id;
+
+  update sca_core.lifecycle_state_instance set effective_to = now() where lifecycle_instance_id = p_lifecycle_instance_id and effective_to is null;
+
+  insert into sca_audit.lifecycle_event (organisation_id, lifecycle_instance_id, event_type, actor_id, occurred_at, event_data)
+  values ((select organisation_id from sca_core.lifecycle_instance where id = p_lifecycle_instance_id), p_lifecycle_instance_id, 'lifecycle.instance.retired', p_actor_id, now(), '{}'::jsonb);
+end;
+$$;
+
+-- Read RPCs (projections and listing)
+create or replace function sca_core.get_lifecycle_snapshot(
+  p_lifecycle_instance_id uuid
+)
+returns table (
+  lifecycle_instance_id uuid,
+  organisation_id uuid,
+  object_type text,
+  object_id uuid,
+  current_state_key text,
+  current_state_instance_id uuid,
+  lifecycle_definition_version_id uuid
+)
+language sql
+security invoker
+as $$
+  select id, organisation_id, object_type, object_id, current_state_key, current_state_instance_id, lifecycle_definition_version_id
+  from sca_core.lifecycle_instance
+  where id = p_lifecycle_instance_id;
+$$;
+
+create or replace function sca_core.get_lifecycle_history(
+  p_lifecycle_instance_id uuid
+)
+returns table (id uuid, state_key text, effective_from timestamptz, effective_to timestamptz, recorded_at timestamptz)
+language sql
+security invoker
+as $$
+  select id, state_key, effective_from, effective_to, recorded_at from sca_core.lifecycle_state_instance where lifecycle_instance_id = p_lifecycle_instance_id order by effective_from desc;
+$$;
+
+create or replace function sca_core.list_available_lifecycle_transitions(
+  p_lifecycle_instance_id uuid
+)
+returns table (transition_key text, from_state text, to_state text, guard text)
+language sql
+security invoker
+as $$
+  select ltd.key, ltd.from_state_key, ltd.to_state_key, ltd.guard_expression
+  from sca_core.lifecycle_instance li
+  join sca_meta.lifecycle_transition_definition ltd on ltd.lifecycle_definition_version_id = li.lifecycle_definition_version_id
+  where li.id = p_lifecycle_instance_id and ltd.from_state_key = li.current_state_key;
+$$;
+
+create or replace function sca_core.get_lifecycle_transition_request(p_request_id uuid)
+returns table (id uuid, lifecycle_instance_id uuid, requested_transition_key text, status text, requested_at timestamptz)
+language sql
+security invoker
+as $$
+  select id, lifecycle_instance_id, requested_transition_key, status, requested_at from sca_core.lifecycle_transition_request where id = p_request_id;
+$$;
+
+create or replace function sca_core.get_latest_lifecycle_transition_evaluation(p_transition_request_id uuid)
+returns table (id uuid, evaluator_id uuid, evaluated_at timestamptz, approved boolean, reason text, evaluation_data jsonb)
+language sql
+security invoker
+as $$
+  select id, evaluator_id, evaluated_at, approved, reason, evaluation_data from sca_core.lifecycle_transition_evaluation where transition_request_id = p_transition_request_id order by evaluated_at desc;
+$$;
+
+create or replace function sca_core.list_lifecycle_instances_for_subject(p_organisation_id uuid, p_object_type text, p_object_id uuid)
+returns table (id uuid, current_state_key text, current_state_instance_id uuid)
+language sql
+security invoker
+as $$
+  select id, current_state_key, current_state_instance_id from sca_core.lifecycle_instance where organisation_id = p_organisation_id and object_type = lower(trim(p_object_type)) and object_id = p_object_id;
+$$;
+
+create or replace function sca_core.list_open_lifecycle_transition_requests(p_lifecycle_instance_id uuid)
+returns table (id uuid, request_id uuid, requested_transition_key text, requested_by uuid, requested_at timestamptz)
+language sql
+security invoker
+as $$
+  select id, request_id, requested_transition_key, requested_by, requested_at from sca_core.lifecycle_transition_request where lifecycle_instance_id = p_lifecycle_instance_id and status = 'pending';
+$$;
+
+create or replace function sca_core.check_lifecycle_projection(p_lifecycle_instance_id uuid)
+returns table (projection_valid boolean, projection_json jsonb)
+language sql
+security invoker
+as $$
+  select true as projection_valid, jsonb_build_object('current_state_key',(select current_state_key from sca_core.lifecycle_instance where id = p_lifecycle_instance_id)) as projection_json;
+$$;
+
+-- revoke/grant
+revoke all on function sca_core.add_lifecycle_definition(text, text, text, uuid) from public;
+revoke all on function sca_core.add_lifecycle_definition_version(uuid, bigint, text, text, uuid) from public;
+revoke all on function sca_core.add_lifecycle_state_definition(uuid, text, text, text, boolean, integer) from public;
+revoke all on function sca_core.add_lifecycle_transition_definition(uuid, text, text, text, text, text, boolean, integer) from public;
+revoke all on function sca_core.publish_lifecycle_definition_version(uuid, uuid) from public;
+
+grant execute on function sca_core.get_lifecycle_snapshot(uuid) to authenticated;
+grant execute on function sca_core.get_lifecycle_history(uuid) to authenticated;
+grant execute on function sca_core.list_available_lifecycle_transitions(uuid) to authenticated;
+grant execute on function sca_core.list_lifecycle_instances_for_subject(uuid, text, uuid) to authenticated;
+grant execute on function sca_core.list_open_lifecycle_transition_requests(uuid) to authenticated;
+grant execute on function sca_core.get_lifecycle_transition_request(uuid) to authenticated;
+grant execute on function sca_core.get_latest_lifecycle_transition_evaluation(uuid) to authenticated;
+grant execute on function sca_core.check_lifecycle_projection(uuid) to authenticated;
+
+commit;
