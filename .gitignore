@@ -1,0 +1,11 @@
+.env
+.env.local
+.runtime/
+.cache/
+.venv/
+.venv-*/
+artifacts/models/
+artifacts/hf-cache/
+artifacts/hermes-home/
+logs/
+*.log

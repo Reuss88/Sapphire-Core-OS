@@ -20,6 +20,8 @@ This milestone establishes the canonical repository structure, governance rules,
 - [Architecture Status](architecture/STATUS.md)
 - [Repository Governance](GOVERNANCE.md)
 - [Roadmap](docs/roadmap/ROADMAP.md)
+- [Hermes Local Nemotron Runtime](docs/runtime/HERMES-LOCAL-NEMOTRON.md)
+- [Hermes Local Nemotron Implementation Report](docs/reports/2026-07-28-hermes-local-nemotron-implementation.md)
 - [Architecture Manifest](architecture-manifest.json)
 - [Contributing](CONTRIBUTING.md)
 
