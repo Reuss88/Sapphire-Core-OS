@@ -142,59 +142,24 @@ jobs:
             echo "supabase CLI not installed; cannot apply migrations"; exit 4
           fi
 
-      - name: Derive Postgres connection details from supabase status
+      - name: Set local Postgres connection details
         if: steps.supabase-detect.outputs.supabase_required == 'true'
         id: derive-db
         run: |
           set -euo pipefail
-          STATUS_OUT="$(supabase status 2>/dev/null || true)"
-          # store status output for local debug only (not uploaded as artifact)
-          echo "$STATUS_OUT" > supabase_status.txt
-          DB_URL="$(printf '%s\n' "$STATUS_OUT" | grep -Eo 'postgres://[^[:space:]]+' | head -n1 || true)"
-          if [ -n "$DB_URL" ]; then
-            DB_URL="$DB_URL" python3 - <<'PY'
-            import os,urllib.parse as up
-            url = os.environ.get('DB_URL')
-            p = up.urlparse(url)
-            user = p.username or 'postgres'
-            pw = p.password or ''
-            host = p.hostname or 'localhost'
-            port = p.port or 5432
-            dbname = p.path.lstrip('/') or 'postgres'
-            # write exports to a temp script for immediate sourcing
-            with open('/tmp/pg_env.sh','w') as f:
-                f.write(f'export PGUSER="{user}"\n')
-                f.write(f'export PGPASSWORD="{pw}"\n')
-                f.write(f'export PGHOST="{host}"\n')
-                f.write(f'export PGPORT="{port}"\n')
-                f.write(f'export PGDATABASE="{dbname}"\n')
-            # append to GITHUB_ENV so later steps have the variables
-            with open(os.environ['GITHUB_ENV'],'a') as gh:
-                gh.write(f'PGUSER={user}\n')
-                gh.write(f'PGPASSWORD={pw}\n')
-                gh.write(f'PGHOST={host}\n')
-                gh.write(f'PGPORT={port}\n')
-                gh.write(f'PGDATABASE={dbname}\n')
-            PY
-            chmod +x /tmp/pg_env.sh
-            . /tmp/pg_env.sh
-            psql -h "${PGHOST}" -p "${PGPORT}" -U "${PGUSER}" -d "${PGDATABASE}" -c '\l' || { echo "Cannot connect to Postgres at ${PGHOST}:${PGPORT} with parsed DB_URL"; exit 5; }
-          else
-            # Fallback to common local Supabase defaults
-            PGHOST=localhost
-            PGPORT=54322
-            PGUSER=postgres
-            PGPASSWORD=postgres
-            PGDATABASE=postgres
-            # persist to GITHUB_ENV
-            echo "PGHOST=${PGHOST}" >> $GITHUB_ENV
-            echo "PGPORT=${PGPORT}" >> $GITHUB_ENV
-            echo "PGUSER=${PGUSER}" >> $GITHUB_ENV
-            echo "PGPASSWORD=${PGPASSWORD}" >> $GITHUB_ENV
-            echo "PGDATABASE=${PGDATABASE}" >> $GITHUB_ENV
-            export PGHOST PGPORT PGUSER PGPASSWORD PGDATABASE
-            psql -h "${PGHOST}" -p "${PGPORT}" -U "${PGUSER}" -d "${PGDATABASE}" -c '\l' || { echo "Cannot connect to Postgres at ${PGHOST}:${PGPORT} (fallback)"; exit 5; }
-          fi
+
+          echo "PGHOST=127.0.0.1" >> "$GITHUB_ENV"
+          echo "PGPORT=54322" >> "$GITHUB_ENV"
+          echo "PGUSER=postgres" >> "$GITHUB_ENV"
+          echo "PGPASSWORD=postgres" >> "$GITHUB_ENV"
+          echo "PGDATABASE=postgres" >> "$GITHUB_ENV"
+
+          PGPASSWORD=postgres psql \
+            -h 127.0.0.1 \
+            -p 54322 \
+            -U postgres \
+            -d postgres \
+            -c 'select 1;'
 
       - name: Run architecture SQL tests (explicit connection)
         if: steps.supabase-detect.outputs.supabase_required == 'true'
