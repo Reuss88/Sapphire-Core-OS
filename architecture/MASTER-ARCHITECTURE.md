@@ -2,13 +2,17 @@
 
 ## 1. Purpose
 
-Sapphire Core OS is a technology-independent enterprise operating architecture and implementation model.
+Sapphire Core OS is a Broker Operating System supported by a technology-independent governed architecture and implementation model.
+
+Its commercial role is to help an operator acquire opportunities, connect buyers and sellers, coordinate deals, learn from pricing and relationship evidence, and earn subscription plus transaction revenue.
+
+This document defines the enabling architecture beneath that business model.
 
 It exists in three connected forms:
 
-1. **Architecture Standard** — the canonical definition of enterprise truth and operating rules.
-2. **Architecture Workbench** — the browser-based environment used to navigate, maintain, review, and govern the architecture.
-3. **Runtime Platform** — the applications, services, workflows, controls, data, evidence, and AI capabilities that implement the architecture.
+1. **Broker Operating System** — the commercial doctrine, workflows, and operating loop.
+2. **Architecture Standard** — the canonical definition of business truth and operating rules.
+3. **Architecture Workbench and Runtime Platform** — the browser and runtime surfaces that navigate, govern, and execute the system.
 
 Applications, databases, vendors, and interfaces may change. Canonical business meaning must remain governed.
 
