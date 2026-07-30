@@ -1,5 +1,12 @@
 # Sapphire Core Architecture Status
 
+## Business framing
+
+- Canonical business definition: Sapphire Core OS is a Broker Operating System.
+- Role of this document: this file tracks the status of the governed architecture that enables the Broker OS.
+- Business doctrine source: `docs/business/BROKER-OS-CANONICAL-DEFINITION.md`
+- Full business comprehension source: `agent-exchange/outbox/reuss-agent/SAPPHIRE_BUSINESS_COMPREHENSION_PACK_v2.md`
+
 ## Current version
 
 - Architecture version: **SCA v0.91**
@@ -51,3 +58,7 @@
 The active project context contains the complete approved status and summaries for the locked modules, but not every earlier module's full original verbatim prose.
 
 Where original wording is unavailable, repository files must be labelled as reconstructed canonical summaries until the original source is recovered and reviewed.
+
+## Positioning rule
+
+The architecture remains enabling infrastructure beneath the Broker Operating System. It is not the primary commercial identity of Sapphire.
