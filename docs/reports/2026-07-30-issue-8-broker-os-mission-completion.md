@@ -10,11 +10,13 @@ Completed with one explicit evidence gap preserved rather than fabricated.
 
 ## PR
 
-Pending creation at the time this file was written.
+- Final merged PR: `#11`
+- URL: `https://github.com/Reuss88/Sapphire-Core-OS/pull/11`
+- Superseded conflicted PR: `#10`
 
 ## Merge commit SHA
 
-Pending creation at the time this file was written.
+`e92db130c1e6c1519d604747cb71f305dce121b9`
 
 ## Previous pack path
 
@@ -133,6 +135,7 @@ The architecture is retained as the governed engine beneath the Broker Operating
 - created a canonical business-definition file
 - created a valid roadmap index to satisfy the existing README link
 - checked that the new business files are discoverable by path
+- reopened the work on a fresh branch after PR `#10` hit a merge conflict with a newer `main` README state
 
 ## Validation results
 
