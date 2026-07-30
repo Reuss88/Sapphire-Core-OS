@@ -1,29 +1,39 @@
 # Sapphire Core OS
 
-Sapphire Core OS is a governed enterprise operating architecture and implementation foundation.
+Sapphire Core OS is a governed Broker Operating System.
 
-It is designed as three connected products:
+Its business purpose is to help an operator identify demand, find supply, match the two, coordinate the deal, understand pricing, manage relationships, and capture subscription plus transaction revenue when value is created.
 
-1. **Sapphire Core Architecture Standard** — the canonical enterprise constitution and operating model.
-2. **Sapphire Core Workbench** — the browser-based environment for navigating, maintaining, and governing the architecture.
-3. **Sapphire Core Runtime** — the services, workflows, controls, data, evidence, and AI capabilities that implement the architecture.
+It is designed as three connected layers:
+
+1. **Broker Operating System** — the commercial product and operating doctrine.
+2. **Sapphire Core Architecture Standard** — the governed engine beneath the product.
+3. **Sapphire Core Runtime and Workbench** — the services, workflows, controls, data, evidence, AI, and interfaces that operate the system.
 
 ## Repository version
 
 **v0.1 — Repository Foundation**
 
-This milestone establishes the canonical repository structure, governance rules, architecture index, contribution workflow, and implementation scaffolding.
+This milestone establishes the canonical repository structure, business doctrine, governance rules, architecture index, contribution workflow, and implementation scaffolding.
 
 ## Start here
 
+- [Canonical Broker OS Definition](docs/business/BROKER-OS-CANONICAL-DEFINITION.md)
+- [Sapphire Business Comprehension Pack v2](agent-exchange/outbox/reuss-agent/SAPPHIRE_BUSINESS_COMPREHENSION_PACK_v2.md)
+- [Issue #8 Completion Report](docs/reports/2026-07-30-issue-8-broker-os-mission-completion.md)
 - [Master Architecture](architecture/MASTER-ARCHITECTURE.md)
 - [Architecture Status](architecture/STATUS.md)
 - [Repository Governance](GOVERNANCE.md)
 - [Roadmap](docs/roadmap/ROADMAP.md)
-- [Hermes Local Nemotron Runtime](docs/runtime/HERMES-LOCAL-NEMOTRON.md)
+- [Skylar (SK) Hermes Local Nemotron Runtime](docs/runtime/HERMES-LOCAL-NEMOTRON.md)
 - [Hermes Local Nemotron Implementation Report](docs/reports/2026-07-28-hermes-local-nemotron-implementation.md)
-- [Architecture Manifest](architecture-manifest.json)
+- [Skylar (SK) Hermes Nemotron Optimisation Report](docs/reports/2026-07-28-sk-hermes-nemotron-optimisation.md)
+- [Agent Runtime Registry](registers/agent-runtime-registry.json)
 - [Contributing](CONTRIBUTING.md)
+
+## Business identity
+
+Sapphire is not primarily pitched as an enterprise-architecture consultancy, generic automation stack, or abstract governance platform. Its market identity is a Broker Operating System powered by network intelligence, pricing intelligence, relationship intelligence, workflow coordination, analytics, and governed AI support.
 
 ## Locked architecture
 
@@ -55,6 +65,6 @@ Next:
 
 ## Development rule
 
-No implementation may silently redefine locked architecture.
+No implementation may silently redefine locked architecture or override the Broker OS business doctrine.
 
 Applications, databases, workflows, APIs, permissions, and AI must conform to the canonical architecture rather than becoming independent sources of business truth.
