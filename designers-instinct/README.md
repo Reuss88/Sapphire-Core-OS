@@ -22,6 +22,21 @@ It does not redefine business logic, ownership, authority, workflow, or commerci
 - AI may recommend, explain, and prioritise, but never grants authority.
 - Workflow state never implies permission.
 
+## Implementation doctrine rule
+
+Each permanent product page must have an implementation-grade page contract under `pages/` before its design and backend implementation are locked.
+
+A page contract must be clear enough to direct:
+
+- information architecture and interaction design;
+- page-level semantic design tokens;
+- Next.js 16 App Router and PWA implementation;
+- future Capacitor behaviour;
+- Supabase DDL, read models, RPCs, functions, triggers, RLS, realtime and audit;
+- Codex implementation without inventing business logic.
+
+Page doctrine extends the cross-product laws in this directory. It does not replace Broker OS ownership or commercial authority.
+
 ## Files
 
 - `dashboard-landing-principles.md` — doctrine for the commercial command centre.
@@ -29,6 +44,7 @@ It does not redefine business logic, ownership, authority, workflow, or commerci
 - `navigation-philosophy.md` — principles governing movement through the product.
 - `parity-laws-v0.md` — initial cross-product design laws.
 - `roadmap.md` — path from Designers Instinct to a locked design system.
+- `pages/dashboard-landing/` — first implementation-grade page doctrine, data contract, token contract and Codex handoff.
 
 ## Status
 
