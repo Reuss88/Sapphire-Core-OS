@@ -1,129 +1,129 @@
 # Designers Instinct Roadmap
 
-## Objective
+## Purpose
 
-Establish and mature the permanent UI/UX governance layer for Sapphire Core OS without allowing product presentation to redefine business doctrine, authority, or data ownership.
+This roadmap describes the progression from initial product-experience doctrine to a locked and reusable design system for Sapphire Core OS.
 
-The governing distinction remains:
-
-> Broker OS doctrine defines how the business operates.
->
-> Designers Instinct defines how the business is experienced.
+The roadmap does not replace Broker OS doctrine. It translates approved operating architecture into coherent product surfaces.
 
 ---
 
 ## Phase 1 — Designers Instinct
 
-### Purpose
+### Objective
 
-Establish the foundational philosophy, product-surface architecture, and navigation doctrine.
+Establish the permanent UI/UX governance layer and define how Sapphire Core OS is experienced.
 
-### Deliverables
+### Core deliverables
 
-- Designers Instinct charter and scope.
 - Dashboard landing principles.
-- Permanent Product Surface Map.
-- Commercial Workspace architecture.
+- Product Surface Map.
 - Navigation philosophy.
 - Initial Parity Laws.
-- Clear boundary between operating doctrine and product experience.
+- Clear separation between operating doctrine and product experience.
+- Permanent Commercial Workspace architecture.
 
 ### Exit criteria
 
 Phase 1 is complete when:
 
-- the permanent top-level navigation is documented;
-- every workspace has a defined purpose, commercial question, inputs, outputs, ownership, references, and connections;
-- the dashboard is established as a commercial command centre;
-- workspace architecture is explicitly separated from database-object architecture;
-- initial design laws can be used to assess new product surfaces.
+- every top-level workspace has a defined purpose, commercial question, inputs, outputs, ownership, references, and connections;
+- the dashboard operates as a commercial command centre rather than a CRM homepage or reporting page;
+- navigation follows commercial intent rather than database structure;
+- all proposed screens can be tested against the initial Parity Laws.
 
 ---
 
 ## Phase 2 — Design Laws
 
-### Purpose
+### Objective
 
-Convert the founding philosophy into testable, enforceable laws that govern every Sapphire product surface.
+Convert the initial principles into tested, enforceable product laws supported by repeated evidence across multiple workspaces and workflows.
 
-### Workstreams
+### Core deliverables
 
-- Expand Parity Laws from v0 into a complete design-law framework.
-- Define workspace landing-page laws.
-- Define record-view laws.
-- Define queue, workflow, and exception-state laws.
-- Define metric, card, table, chart, and drill-down laws.
-- Define AI interaction and recommendation laws.
-- Define permission, approval, and authority presentation laws.
-- Define responsive, accessibility, and information-density laws.
-- Define exceptions and the process for approving them.
+- Parity Laws v1.
+- Screen archetypes for command centres, queues, records, decisions, execution, intelligence, and governance.
+- Information hierarchy rules.
+- Interaction and drill-down laws.
+- AI experience laws.
+- Authority, permission, and irreversible-action patterns.
+- Empty, loading, error, exception, and blocked-state doctrine.
+- Accessibility and responsive behaviour requirements.
+- Design review and exception process.
 
-### Required outputs
+### Validation method
 
-- Design Laws v1.
-- Surface review checklist.
-- Design exception register.
-- Ownership and drill-down matrix.
-- Screen-purpose and commercial-question template.
-- AI authority-boundary patterns.
+Laws should be tested against real Sapphire workflows, including:
+
+- demand qualification;
+- supply qualification;
+- opportunity progression;
+- demand-to-supply matching;
+- deal execution;
+- KYC and KYB review;
+- CRI and commercial intelligence;
+- performance diagnosis;
+- governance and audit.
 
 ### Exit criteria
 
-Phase 2 is complete when product proposals can be accepted, rejected, or revised against explicit laws rather than subjective taste.
+Phase 2 is complete when design decisions can be reviewed consistently without relying on personal taste, isolated mock-ups, or implementation convenience.
 
 ---
 
 ## Phase 3 — Locked Design System
 
-### Purpose
+### Objective
 
-Translate approved doctrine and laws into a reusable, governed implementation system.
+Encode the approved doctrine and laws into a stable, reusable implementation system.
 
-### Workstreams
+### Core deliverables
 
-- Establish design tokens.
-- Define typography, spacing, layout, and hierarchy standards.
-- Define component behaviour and states.
-- Create dashboard, workspace, record, queue, document, and governance patterns.
-- Encode accessibility and responsive requirements.
-- Create component-level authority and workflow safeguards.
-- Define versioning, contribution, review, and release governance.
-- Align implementation components with the Product Surface Map and Design Laws.
+- Design tokens.
+- Typography, spacing, layout, elevation, and motion standards.
+- Colour and semantic status system.
+- Reusable component library.
+- Workspace shell and navigation components.
+- Dashboard, table, card, timeline, form, decision, evidence, and audit patterns.
+- AI recommendation and explanation components.
+- Permission, approval, warning, confirmation, and irreversible-action components.
+- Accessibility specifications.
+- Frontend implementation guidance and quality gates.
 
-### Required outputs
+### Locking principle
 
-- Locked design tokens.
-- Approved component library.
-- Standard page templates.
-- Interaction and state catalogue.
-- Design-to-engineering implementation rules.
-- Versioned design-system documentation.
-- Change-control process.
+The design system is locked only after the underlying doctrine and laws have been validated.
+
+Components must implement doctrine. Components must not silently redefine doctrine.
 
 ### Exit criteria
 
-Phase 3 is complete when Sapphire can build new surfaces consistently from governed components without re-deciding foundational design principles on every feature.
+Phase 3 is complete when Sapphire teams can build new surfaces quickly while preserving commercial clarity, authority boundaries, visual consistency, accessibility, and product coherence.
 
 ---
 
-## Sequence rule
+## Governance and promotion
 
-The phases must proceed in order:
+Changes progress through the following sequence:
 
-1. Philosophy and product architecture.
-2. Testable design laws.
-3. Locked implementation system.
+1. **Observation** — a product or workflow issue is identified.
+2. **Proposal** — the proposed design principle, law, or pattern is documented.
+3. **Validation** — the proposal is tested against relevant Commercial Workspaces and operating doctrine.
+4. **Approval** — the change is accepted through Sapphire governance.
+5. **Promotion** — the approved change is added to Designers Instinct, the Design Laws, or the Locked Design System at the appropriate level.
+6. **Implementation** — product surfaces and components are updated without altering unrelated doctrine.
 
-The design system must not be locked before the governing laws are mature. Otherwise, inconsistent assumptions become permanent components.
+No isolated mock-up, developer shortcut, AI suggestion, or stakeholder preference automatically becomes permanent doctrine.
 
-## Long-term governance
+## Permanent sequence
 
-After Phase 3, Designers Instinct becomes an ongoing governance function responsible for:
-
-- maintaining parity across product surfaces;
-- reviewing proposed changes;
-- protecting workspace ownership;
-- preventing object-driven navigation drift;
-- preserving authority boundaries;
-- evolving the design system through controlled versions;
-- ensuring the product remains commercially decisive rather than analytically decorative.
+> Broker OS defines what the business requires.
+>
+> Designers Instinct defines how that requirement should be experienced.
+>
+> Design Laws define the constraints.
+>
+> The Locked Design System makes those constraints reusable.
+>
+> The frontend implements them.

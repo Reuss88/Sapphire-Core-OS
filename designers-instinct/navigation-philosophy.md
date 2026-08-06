@@ -2,13 +2,25 @@
 
 ## Purpose
 
-Navigation in Sapphire Core OS must reflect commercial intent, not the underlying database schema.
+Navigation in Sapphire Core OS must reflect commercial work, not database structure.
 
-Users should move through Sapphire according to the work they are trying to understand, decide, or execute. The product should not force users to translate their commercial objective into technical objects before they can act.
+The product is organised around Commercial Workspaces because users enter Sapphire to understand, decide, and act. They should not need to understand the underlying data model to move through the system.
 
-## Permanent navigation
+## Permanent doctrine
 
-The top-level product navigation is:
+- Navigation follows the user's commercial intent.
+- Workspaces own outcomes, not merely records.
+- Database objects remain implementation detail.
+- The same record may be referenced across several workspaces, but it has one owning workspace.
+- Movement through Sapphire should preserve context, authority, and commercial continuity.
+- Drill-down is preferred over copying the same detail into several screens.
+- Global navigation exposes stable workspaces; local navigation exposes the stages and views needed inside that workspace.
+
+## Navigation hierarchy
+
+### Level 1 — Commercial Workspaces
+
+The permanent top-level navigation is:
 
 1. Dashboard
 2. Demand
@@ -22,87 +34,53 @@ The top-level product navigation is:
 10. Documents
 11. Governance
 
-This sequence reflects the commercial operating flow while preserving access to cross-cutting institutional capabilities.
+Top-level navigation must remain stable. New database entities do not automatically justify new workspaces.
 
-## Core principles
+### Level 2 — Workspace views
 
-### Commercial workspaces over object menus
+Each workspace may contain views such as queues, stages, exceptions, saved views, and role-specific surfaces. These views must support the workspace's primary commercial question.
 
-Top-level navigation represents Commercial Workspaces.
+### Level 3 — Record and decision surfaces
 
-Companies, contacts, RFQs, contracts, inventory, and other records may appear within those workspaces, but they do not automatically become top-level navigation items.
+Record pages, decision panels, timelines, evidence, and execution actions appear only after the user has entered the relevant workspace or followed a contextual drill-down.
 
-### One destination for ownership
+## Context preservation
 
-Every record has one primary owning workspace.
+When a user moves between connected workspaces, Sapphire should preserve:
 
-The same record may be referenced elsewhere, but navigation must lead users back to the owning workspace for full context, editing, execution, and governance.
+- the originating record or commercial context;
+- the reason for the transition;
+- the relevant permissions and authority state;
+- the next meaningful action;
+- a clear route back to the originating surface.
 
-### Drill-down over duplication
+## Ownership and references
 
-A summary should lead to detail rather than reproduce it.
+Every material record must have one owning workspace.
 
-The dashboard, performance views, intelligence surfaces, and connected workspaces may surface the same commercial condition, but they must not create parallel operational copies.
+Other workspaces may reference that record, summarise it, or provide a contextual route to it. They must not create competing versions of the same commercial truth.
 
-### Context must survive movement
+## Navigation tests
 
-When users move between connected workspaces, Sapphire should preserve relevant context such as:
+A navigation decision is valid only when it can answer:
 
-- the originating record;
-- the commercial question being investigated;
-- active filters;
-- relationship context;
-- deal or opportunity context;
-- the reason for the transition.
+1. What commercial intention brought the user here?
+2. Which workspace owns the outcome?
+3. What information is necessary now?
+4. What is the next meaningful action?
+5. Where does the user go for full detail?
 
-Navigation should reduce rework, not force users to reconstruct the path that brought them there.
+## Anti-patterns
 
-### Action follows authority
+Sapphire must not:
 
-Navigation may reveal an available destination or recommended next step. It must not imply that the user has permission to complete the action.
+- expose a menu item for every database table;
+- duplicate full records across workspaces;
+- use navigation as a substitute for workflow design;
+- hide authority boundaries behind interface convenience;
+- create dead-end dashboards or reports;
+- add top-level navigation solely because a feature exists.
 
-Visibility, workflow position, recommendation, and authority are separate concepts.
+## Governing principle
 
-### Predictability over novelty
-
-A user should be able to predict where information lives and where an action will occur.
-
-New features should attach to the workspace that owns their commercial purpose. They should not create new top-level surfaces merely because they introduce a new record type or technology.
-
-## Workspace entry pattern
-
-Each workspace should open with:
-
-1. A clear statement of purpose.
-2. The dominant commercial question.
-3. A prioritised summary of active work.
-4. Exceptions and items requiring attention.
-5. A direct route into owned records and actions.
-
-A workspace landing page is not a miniature dashboard for the entire system. It is the command surface for that workspace's commercial responsibility.
-
-## Cross-workspace movement
-
-Cross-workspace links should explain why the destination matters.
-
-Examples include:
-
-- Demand to Matching: find credible supply for a qualified requirement.
-- Supply to Matching: identify demand compatible with available product.
-- Matching to Opportunities: advance a commercially viable pairing.
-- Opportunities to Deals: begin controlled execution.
-- Deals to Documents: inspect or complete execution evidence.
-- Network to Intelligence: understand trust, history, and commercial context.
-- Performance to an owning workspace: investigate the cause behind a metric.
-
-## Navigation test
-
-Before adding or changing navigation, answer:
-
-- What commercial task is the user trying to complete?
-- Which workspace owns that task?
-- Is this a destination, a drill-down, or a reference?
-- Does the change duplicate an existing route?
-- Will the user understand where they are, why they arrived, and what happens next?
-
-If those questions cannot be answered clearly, the navigation change is not ready.
+Navigation must make the commercial operating model easier to understand without altering the operating model itself.

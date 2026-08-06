@@ -2,97 +2,101 @@
 
 ## Status
 
-Initial design laws for consistent commercial experience across Sapphire Core OS.
+Initial cross-product design laws for Sapphire Core OS.
 
-These laws apply across dashboards, workspace landings, record views, queues, workflows, documents, intelligence surfaces, AI interactions, and administrative interfaces.
+These laws apply across all Commercial Workspaces, dashboards, record surfaces, decision panels, AI surfaces, reports, and execution interfaces.
 
-## Laws
+## Core laws
 
-### 1. One primary purpose per screen
+### Law 1 — One primary purpose per screen
 
-Every screen must have one clearly identifiable reason to exist.
+Every screen must have one clearly identifiable purpose. Secondary functions may support that purpose but must not compete with it.
 
-Secondary functions may support that purpose, but they must not compete with it.
+### Law 2 — One dominant commercial question
 
-### 2. One dominant commercial question
+Every screen must answer one dominant commercial question. The user should understand that question within seconds.
 
-Every screen must answer one dominant commercial question.
+### Law 3 — Summary before detail
 
-A user should understand the question before interpreting the data.
+The interface must establish orientation, significance, and urgency before exposing full detail.
 
-### 3. Summary before detail
+### Law 4 — Drill-down over duplication
 
-Users should encounter meaning, state, and priority before exhaustive information.
+A summary should lead to the owning workspace or record. Sapphire must not duplicate full commercial truth across multiple surfaces.
 
-Detail remains available through deliberate drill-down.
-
-### 4. Drill-down over duplication
-
-A summary must lead to the workspace or record that owns the detail.
-
-Do not recreate full operational interfaces in dashboards, reports, intelligence views, or connected workspaces.
-
-### 5. Maximum three visual emphasis levels
+### Law 5 — Maximum three visual emphasis levels
 
 A screen may use no more than three meaningful levels of visual emphasis:
 
-1. Dominant priority.
-2. Supporting priority.
-3. Contextual information.
+1. Primary action or critical state.
+2. Important supporting information.
+3. Contextual or secondary information.
 
-Everything cannot be urgent, prominent, or visually loud.
+Visual noise is a governance failure, not a styling preference.
 
-### 6. Every metric leads somewhere
+### Law 6 — Every metric leads somewhere
 
-A metric must provide a route to its source, cause, records, or required action.
+Every displayed metric must provide a route to its source, explanation, contributing records, or appropriate action.
 
-A metric without a meaningful destination is decorative analytics.
+A metric without a destination is decorative analytics.
 
-### 7. Every card answers: What? Why? What next?
+### Law 7 — Every card answers What, Why, What next
 
-Every card must make clear:
+Every operational card must make clear:
 
-- **What?** The condition, event, value, or state.
-- **Why?** The commercial significance or cause.
-- **What next?** The action, decision, or drill-down available.
+- **What?** What has happened or what state exists?
+- **Why?** Why does it matter commercially?
+- **What next?** What action, decision, or drill-down follows?
 
-A card that cannot answer all three should be redesigned or removed.
+### Law 8 — AI recommends but never grants authority
 
-### 8. AI recommends but never grants authority
+AI may prioritise, explain, summarise, suggest, detect, and recommend.
 
-AI may summarise, explain, prioritise, compare, forecast, or recommend.
+AI must not create commercial authority, approve restricted action, bypass governance, or imply that a recommendation is permission.
 
-AI may not create authority, override permissions, approve restricted actions, or present its recommendation as a binding decision.
+### Law 9 — Workflow does not imply permission
 
-### 9. Workflow does not imply permission
+A record reaching a workflow stage does not prove that the user or system has authority to perform the next action.
 
-A record reaching a workflow stage does not automatically authorise the next action.
+Permission, mandate, approval, and compliance remain explicit controls.
 
-Workflow state, role, permission, approval, and authority must remain distinct.
+### Law 10 — Commercial action outweighs decorative analytics
 
-### 10. Commercial action outweighs decorative analytics
+When space, attention, or implementation effort is limited, Sapphire must prioritise commercial action, decision support, exception handling, and execution clarity over decorative charts or non-actionable reporting.
 
-When screen space, attention, or hierarchy is contested, actionable commercial information takes priority over passive visualisation.
+## Supporting laws
 
-Charts, trends, and indicators must support a decision or action. They are not an end in themselves.
+### Law 11 — Ownership must remain visible
 
-## Parity requirement
+Every meaningful item must reveal the workspace, person, role, or process that owns the next outcome.
 
-The same commercial concept should behave consistently wherever it appears.
+### Law 12 — Exceptions outrank routine status
 
-Parity does not require every surface to look identical. It requires consistent meaning, authority boundaries, ownership, interaction logic, and drill-down behaviour.
+Risks, blockers, broken commitments, missing evidence, and time-sensitive opportunities receive greater prominence than normal progress.
 
-## Enforcement test
+### Law 13 — State must not depend on colour alone
 
-Before approving a product surface, confirm:
+Status, severity, and authority must be communicated through text, structure, iconography, or labels as well as colour.
 
-- its primary purpose is unmistakable;
-- its dominant commercial question is visible;
-- summaries precede details;
-- referenced information drills into an owning workspace;
-- visual hierarchy uses no more than three emphasis levels;
-- metrics and cards lead to meaningful destinations;
-- AI and workflow states do not imply authority;
-- commercial action outranks decoration.
+### Law 14 — Irreversible actions require consequence clarity
 
-Failure against any law requires an explicit exception or redesign.
+Before an irreversible, external, financial, legal, or authority-bearing action, the interface must clearly state what will happen and who will be affected.
+
+### Law 15 — Product language follows commercial language
+
+Labels should use the language of commodity brokerage and Sapphire's operating doctrine. Internal implementation terminology must not leak into the product without a genuine user need.
+
+## Parity test
+
+A new screen or component is compliant only when:
+
+- its primary purpose is obvious;
+- its dominant commercial question is explicit;
+- its hierarchy respects the three-level limit;
+- its metrics and summaries lead to meaningful destinations;
+- its actions respect authority and governance;
+- it reduces rather than increases commercial ambiguity.
+
+## Change control
+
+This is version 0. Laws may be refined through evidence, but they must not be weakened for convenience, speed, visual novelty, or isolated feature requests.
