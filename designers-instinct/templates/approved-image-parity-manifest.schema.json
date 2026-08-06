@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sapphire.local/schemas/approved-image-parity-manifest.schema.json",
+  "title": "Sapphire Approved Image Parity Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "constitution",
+    "surface_id",
+    "approval_version",
+    "approval",
+    "reference",
+    "canonical_viewport",
+    "delivery",
+    "routes",
+    "governing_doctrine",
+    "evidence"
+  ],
+  "properties": {
+    "constitution": {
+      "const": "CS-UI-001@1.0"
+    },
+    "surface_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "approval_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+(?:\\.[0-9]+)*$"
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "authority", "approved_at"],
+      "properties": {
+        "state": { "const": "DIRECTOR_APPROVED" },
+        "authority": { "type": "string", "minLength": 1 },
+        "approved_at": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "media_type", "width", "height", "aspect_ratio", "sha256", "visually_verified"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "media_type": { "enum": ["image/png", "image/jpeg", "image/webp"] },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "aspect_ratio": { "type": "number", "exclusiveMinimum": 0 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "colour_profile": { "type": ["string", "null"] },
+        "orientation": { "type": ["integer", "null"], "minimum": 1, "maximum": 8 },
+        "has_alpha": { "type": ["boolean", "null"] },
+        "visually_verified": { "const": true },
+        "verified_decoders": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "canonical_viewport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "zoom_percent", "device_pixel_ratio", "page_scroll"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 320 },
+        "height": { "type": "integer", "minimum": 320 },
+        "zoom_percent": { "type": "integer", "minimum": 25, "maximum": 500 },
+        "device_pixel_ratio": { "type": "number", "exclusiveMinimum": 0 },
+        "page_scroll": { "enum": ["none", "vertical", "horizontal", "both"] },
+        "settled_motion": { "type": "boolean", "default": true }
+      }
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage", "target_stack", "migration_target"],
+      "properties": {
+        "stage": { "enum": ["visual_prototype", "product_implementation"] },
+        "target_stack": { "type": "string", "minLength": 1 },
+        "migration_target": { "type": ["string", "null"] },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "purpose"],
+        "properties": {
+          "path": { "type": "string", "pattern": "^/" },
+          "purpose": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "governing_doctrine": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "dynamic_regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["region", "comparison_rule"],
+        "properties": {
+          "region": { "type": "string", "minLength": 1 },
+          "comparison_rule": { "enum": ["fixed_fixture", "mask", "exact"] },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation", "overlay", "diff", "metrics", "completion"],
+      "properties": {
+        "implementation": { "type": "string" },
+        "overlay": { "type": "string" },
+        "diff": { "type": "string" },
+        "metrics": { "type": "string" },
+        "completion": { "type": "string" }
+      }
+    }
+  }
+}

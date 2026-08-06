@@ -43,3 +43,12 @@ AI must not:
 - fabricate evidence;
 - silently modify locked architecture;
 - treat application behaviour as canonical truth.
+
+## Approved-image implementation governance
+
+Every web surface commissioned from a Director-approved PNG, JPEG or WebP is governed by
+[`CS-UI-001 — Approved Image to Web Parity Constitution`](designers-instinct/constitutional/CS-UI-001-APPROVED-IMAGE-TO-WEB-PARITY-CONSTITUTION.md).
+
+The exact committed image governs visual composition at its canonical viewport. Broker OS doctrine and ratified architecture continue to govern meaning, authority, permissions and business behaviour.
+
+No agent may declare 1:1 parity unless the reference-asset integrity gate, canonical screenshot comparison, binary acceptance gates and Director Approval Lock in CS-UI-001 have all passed. A prose mission, prototype or subjective resemblance is not parity evidence.

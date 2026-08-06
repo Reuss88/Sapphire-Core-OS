@@ -6,6 +6,8 @@ Initial cross-product design laws for Sapphire Core OS.
 
 These laws apply across all Commercial Workspaces, dashboards, record surfaces, decision panels, AI surfaces, reports, and execution interfaces.
 
+Approved-image implementation and parity claims are additionally governed by [`CS-UI-001`](constitutional/CS-UI-001-APPROVED-IMAGE-TO-WEB-PARITY-CONSTITUTION.md). Where these experience laws define what a surface must communicate, CS-UI-001 defines how an approved raster is handed off, reproduced, evidenced and accepted.
+
 ## Core laws
 
 ### Law 1 — One primary purpose per screen
