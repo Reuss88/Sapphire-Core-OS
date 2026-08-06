@@ -2,90 +2,133 @@
 
 ## Status
 
-Authoritative page doctrine for the first Director-facing Dashboard Landing design.
+Authoritative page doctrine for the first Director-facing HOME design.
 
 ## Primary purpose
 
-Provide the Director with a decision-ready commercial command centre that reveals system movement, material risk, required intervention and emerging value.
+Provide the Director with a decision-ready commercial command centre that reveals system movement, material risk, required intervention, communication obligations, execution priorities and emerging value.
 
 ## Dominant commercial question
 
-What requires the Director's attention now, what is progressing, and where is commercial value being created or blocked?
+What requires the Director's attention now, what must be done, who requires a response, what is progressing, and where is commercially actionable value being created or blocked?
 
 ## Mandatory questions answered
 
 1. What is happening?
 2. What needs attention?
-3. What is progressing?
-4. What commercial value is emerging?
+3. What must be done today?
+4. Who or what requires a response?
+5. What is progressing or blocked?
+6. What commercial value is emerging?
+7. What is hot right now, why, and what action is justified?
 
 ## Mandatory page regions
 
-The first landing design must contain these regions in this order of importance:
+The first HOME design must contain these regions in order of commercial priority, not merely visual preference:
 
-1. **Command header** — page identity, current scope, last successful refresh and global period/filter controls.
-2. **Director attention queue** — the highest-priority exceptions, approvals, blockers and expiring conditions.
-3. **Commercial movement** — concise stage movement across opportunities, matches and deals.
-4. **Emerging value** — weighted pipeline value, expected commission and material value changes.
-5. **Workspace pulse** — compact summaries for Demand, Supply, Opportunities, Matching, Deals, Network and Intelligence.
-6. **Performance context** — only metrics that explain current commercial conditions or direct the user to action.
-7. **AI briefing** — evidence-linked explanation and recommendations, never autonomous approval or authority.
+1. **Command Header** — page identity, current scope, last successful refresh and global period/filter controls.
+2. **Director Attention Queue** — highest-priority exceptions, approvals, blockers, risks and expiring conditions.
+3. **Actions Summary** — missions, tasks, decisions, follow-ups, overdue work, blocked work and waiting-on states requiring Director awareness.
+4. **Inbox Summary** — communications requiring response, high-value or high-risk conversations and overdue external replies.
+5. **Hot Right Now** — strongest evidence-backed buy, sell, source, list, hold, avoid or investigate signals.
+6. **Commercial Movement** — concise meaningful movement across demand, supply, opportunities, matches and deals.
+7. **Emerging Value** — weighted pipeline, expected commission, value at risk and material changes.
+8. **Workspace Pulse** — compact summaries across the permanent Commercial Workspaces.
+9. **Performance Context** — only metrics that explain current conditions or direct action.
+10. **AI Director Brief** — evidence-linked explanation and recommendation, never autonomous approval or authority.
 
-## Priority order
-
-1. Safety, compliance and execution risk.
-2. Director decisions and approvals.
-3. Time-sensitive blockers and deadlines.
-4. Material stage movement.
-5. Emerging value and value-at-risk.
-6. Contextual performance.
-7. Informational background.
+Responsive layouts may change placement, but may not erase these distinctions or hide critical conditions.
 
 ## Required card contract
 
 Every card or widget must answer:
 
-- **What?** The current state or change.
-- **Why?** Why the condition matters commercially.
-- **What next?** The next valid action or drill-down.
+- **What?** Current state, obligation, signal or change.
+- **Why?** Why it matters commercially.
+- **What next?** Next valid action or drill-down.
 
 Every widget must declare:
 
 - owning workspace;
-- referenced records;
+- referenced records or profiles;
 - data source or RPC;
-- freshness state;
+- freshness and evidence state;
 - permission boundary;
 - drill-down route;
-- empty, loading, stale and error states.
+- empty, loading, partial, stale, offline and error states.
 
-## Director attention queue
+## Director Attention Queue
 
-The queue is not a generic task list. It contains only conditions that justify Director awareness or intervention, including:
+This queue is not a generic task list. It contains only conditions justifying Director awareness or intervention, including:
 
 - approvals reserved for Director authority;
-- blocked high-value opportunities or deals;
-- expiring mandates, offers or material documents;
-- unresolved KYC/KYB or trust risk affecting execution;
+- blocked high-value missions, opportunities or deals;
+- material compliance, trust or finance risk;
+- expiring mandates, offers or documents;
 - missing execution evidence;
 - material value deterioration;
 - critical workflow exceptions;
 - AI recommendations explicitly awaiting human judgement.
 
-Items must be ranked by severity, urgency, value exposure and confidence. The ranking may recommend order but may not grant authority.
+Ranking may consider severity, urgency, value exposure and confidence, but may not grant authority.
 
-## Commercial movement
+## Actions Summary
 
-Movement must show meaningful transitions rather than raw activity. Examples include:
+The Actions Summary must reveal:
 
-- demand qualified;
-- supply verified;
-- match accepted or rejected;
-- opportunity advanced, stalled or lost;
-- deal milestone completed or blocked;
-- settlement or commission status changed.
+- actions due today;
+- overdue actions;
+- missions at risk;
+- tasks blocked by dependencies;
+- items waiting on external parties;
+- decisions requiring Director authority;
+- assignments by role, including Closers and Research Specialists;
+- recently completed material actions.
 
-## Emerging value
+Every item must link to the canonical Action, Mission, Decision or owning commercial record.
+
+HOME must not maintain a duplicate task state.
+
+## Inbox Summary
+
+The Inbox Summary must reveal:
+
+- messages requiring the Director's response;
+- communications affecting active deals, missions, finance or compliance;
+- high-value and high-risk threads;
+- overdue external replies;
+- communication-derived actions or decisions;
+- channel, participant, commercial context and response status.
+
+Read state must not be presented as resolved state.
+
+HOME must not become a full messaging client.
+
+## Hot Right Now
+
+Hot Right Now must reveal only the strongest current decision-relevant signals.
+
+Each signal must show:
+
+- subject profile;
+- proposed action: buy, sell, source, list, hold, avoid, monitor or investigate;
+- reason the action matters now;
+- expected upside, downside or value exposure;
+- confidence and freshness;
+- key evidence and unresolved uncertainty;
+- action window;
+- next valid action;
+- link to Market Radar or the subject Profile.
+
+Examples may include commodity price dislocation, rising demand, verified inventory, property market timing or acquisition pricing gaps.
+
+No signal may appear as a bare arrow, colour or unsupported instruction.
+
+## Commercial Movement
+
+Movement must show meaningful transitions rather than raw activity, including demand qualification, supply verification, match outcomes, opportunity stage changes, deal milestones, finance progress and mission execution.
+
+## Emerging Value
 
 Value must distinguish:
 
@@ -96,50 +139,45 @@ Value must distinguish:
 - value at risk;
 - change over the selected period.
 
-No value number may appear without its definition, currency, period and drill-down.
+No value number may appear without definition, currency, period and drill-down.
+
+## Profile dependency
+
+HOME summaries and signals must reference canonical Profiles where the subject is an asset, commodity, property, vehicle, watch, company, person, contract, deal, bank, facility, route or other commercially relevant object.
+
+HOME must not create shadow profile data.
 
 ## AI boundary
 
-AI may:
+AI may summarise evidence, explain changes, identify likely causes, rank attention candidates, recommend actions, extract communication commitments and highlight uncertainty.
 
-- summarise evidence;
-- explain changes;
-- identify likely causes;
-- rank attention candidates;
-- recommend next actions;
-- highlight uncertainty.
-
-AI may not:
-
-- approve a deal, mandate, counterparty or payment;
-- bypass RLS or workflow permissions;
-- represent inference as verified fact;
-- mutate commercial records from the briefing surface without an explicit authorised user action.
+AI may not approve a deal, acquisition, mandate, payment, message or counterparty; bypass RLS; represent inference as verified fact; or mutate records without explicit authorised action or approved policy.
 
 ## Prohibitions
 
-The Dashboard Landing must not become:
+HOME must not become:
 
 - a CRM record browser;
+- a full task manager;
+- a full messaging client;
+- a general market terminal;
 - a full reporting suite;
 - every workspace reproduced on one page;
 - a decorative chart gallery;
-- a place where hidden business logic is invented in the frontend;
-- a substitute for workspace ownership;
+- a place where business logic is invented in the frontend;
 - a surface where visibility implies permission.
-
-## Personalisation
-
-Personalisation may control ordering, density, saved scope and collapsed regions. It may not hide mandatory critical alerts, alter authority, change metric definitions or create different business truth for different users.
 
 ## Acceptance standard
 
-The page passes doctrine review only when the Director can, within one scan:
+HOME passes doctrine review only when the Director can, within one scan:
 
 - identify the most important commercial condition;
-- understand why it matters;
+- identify today's most important actions and missions;
+- see who requires a response;
+- recognise the strongest current acquisition or market signal;
+- understand why each item matters;
 - see the next valid action;
-- distinguish verified data from AI inference;
-- drill into the owning workspace;
-- recognise stale, incomplete or unavailable data;
-- use the same commercial meaning on desktop, installed PWA and future Capacitor surfaces.
+- distinguish verified evidence from AI inference;
+- drill into the owning workspace or canonical profile;
+- recognise stale, incomplete, offline or unavailable data;
+- preserve the same commercial meaning across desktop, installed PWA and future Capacitor surfaces.
