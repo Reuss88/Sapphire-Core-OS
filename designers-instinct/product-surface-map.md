@@ -2,307 +2,356 @@
 
 ## Permanent architecture decision
 
-Sapphire Core OS is organised around **Commercial Workspaces**.
+Sapphire Core OS is organised around **Commercial Workspaces**, not database objects.
 
-It is **not** organised around database objects.
+Database objects support the system internally. Commercial Workspaces organise the product around what users need to understand, decide, communicate and execute.
 
-Database objects support the system internally. Commercial Workspaces organise the product around the work users are trying to understand, decide, and execute.
+## Permanent top-level navigation
 
-The permanent top-level navigation is:
+1. HOME
+2. Actions
+3. Inbox
+4. Market Radar
+5. Demand
+6. Supply
+7. Opportunities
+8. Matching
+9. Deals
+10. Network
+11. Profiles
+12. Intelligence
+13. Performance
+14. Documents
+15. Finance
+16. Governance
 
-1. Dashboard
-2. Demand
-3. Supply
-4. Opportunities
-5. Matching
-6. Deals
-7. Network
-8. Intelligence
-9. Performance
-10. Documents
-11. Governance
+The order may be adapted responsively, but the workspace distinctions and ownership boundaries are permanent unless formally amended.
 
 ---
 
-## Dashboard
+## HOME
 
 **Purpose**  
-Provide a decision-ready commercial command centre across Sapphire.
+Provide the Director with a decision-ready commercial command centre.
 
 **Commercial question answered**  
-What is happening, what needs attention, what is progressing, and what commercial value is emerging?
+What is happening, what needs attention, what must be done, who requires a response, what is progressing, and where is commercially actionable value emerging?
 
 **Primary inputs**  
-Summaries, exceptions, alerts, milestones, value signals, and performance indicators from all workspaces.
+Prioritised summaries from every workspace.
 
 **Primary outputs**  
-Prioritised actions, drill-down routes, decision prompts, risk visibility, and commercial orientation.
+Director orientation, actions, decisions, drill-down routes and commercial briefings.
 
 **Records owned**  
-Dashboard configurations, saved views, widget preferences, and alert presentation rules.
+Dashboard configuration, saved scope and presentation preferences only.
 
 **Records referenced**  
-Demand records, supply records, opportunities, matches, deals, network entities, intelligence, performance metrics, documents, and governance states.
+All workspaces.
 
 **Connected workspaces**  
 All workspaces.
+
+---
+
+## Actions
+
+**Purpose**  
+Coordinate missions, tasks, decisions, follow-ups and obligations across Sapphire.
+
+**Commercial question answered**  
+What must be done, by whom, by when, with what authority and evidence?
+
+**Primary inputs**  
+Director assignments, workflow events, Inbox commitments, Market Radar signals, deadlines, approvals and AI proposals accepted by an authorised user.
+
+**Primary outputs**  
+Mission plans, assigned tasks, decision queues, follow-ups, completion evidence and execution history.
+
+**Records owned**  
+Missions, tasks, dependencies, assignments, waiting-on states, follow-ups, reminders, decision requests and completion evidence.
+
+**Records referenced**  
+All commercial records connected to the work.
+
+**Connected workspaces**  
+All workspaces.
+
+---
+
+## Inbox
+
+**Purpose**  
+Unify commercial communication and retain it as linked institutional memory.
+
+**Commercial question answered**  
+Who communicated what, what does it affect, and what requires a response or action?
+
+**Primary inputs**  
+Internal messages, email and approved external communication channels, call records, voice notes and system notices.
+
+**Primary outputs**  
+Threaded communication, response obligations, linked context, drafted replies and action proposals.
+
+**Records owned**  
+Channels, conversations, messages, participants, delivery and response states, classifications and record links.
+
+**Records referenced**  
+Network entities, profiles, missions, opportunities, deals, documents and finance records.
+
+**Connected workspaces**  
+Actions, Network, Profiles, Opportunities, Deals, Documents, Finance and Governance.
+
+---
+
+## Market Radar
+
+**Purpose**  
+Detect, explain and rank time-sensitive commercial signals.
+
+**Commercial question answered**  
+Where should Sapphire deploy attention now, why, and what action is justified?
+
+**Primary inputs**  
+Prices, comparables, supply and demand change, profile valuations, market events, relationship intelligence, opportunity economics and evidence quality.
+
+**Primary outputs**  
+Buy, sell, source, list, hold, avoid, investigate and monitor signals with evidence, confidence and action windows.
+
+**Records owned**  
+Market observations, radar signals, score histories, watch conditions, model versions and signal outcomes.
+
+**Records referenced**  
+Profiles, Demand, Supply, Opportunities, Deals, Intelligence, Performance and Finance.
+
+**Connected workspaces**  
+HOME, Actions, Profiles, Demand, Supply, Opportunities, Intelligence and Performance.
 
 ---
 
 ## Demand
 
 **Purpose**  
-Capture, qualify, structure, and interpret market demand.
+Capture, qualify, structure and interpret market demand.
 
 **Commercial question answered**  
-What are buyers trying to procure, on what terms, with what credibility, urgency, and commercial potential?
+What are buyers trying to procure, on what terms, with what credibility, urgency and commercial potential?
 
 **Primary inputs**  
-Buyer enquiries, RFQs, procurement requests, product requirements, volumes, specifications, destinations, timelines, pricing expectations, and buyer intelligence.
+Buyer enquiries, RFQs, procurement requests, specifications, volumes, destination, timing and price expectations.
 
 **Primary outputs**  
-Qualified demand, structured buying requirements, demand signals, matching candidates, opportunity inputs, and demand intelligence.
+Qualified demand, structured requirements, demand signals and matching candidates.
 
 **Records owned**  
-Buyer enquiries, RFQs, procurement requests, and demand intelligence.
+Buyer enquiries, RFQs, procurement requests and demand intelligence.
 
 **Records referenced**  
-Companies, contacts, mandates, KYC/KYB, supply, matches, opportunities, deals, documents, and market intelligence.
+Network, Profiles, Supply, Opportunities, Matching, Deals and Documents.
 
 **Connected workspaces**  
-Network, Supply, Opportunities, Matching, Deals, Intelligence, Documents, and Governance.
+Actions, Inbox, Market Radar, Supply, Opportunities, Matching, Deals, Network, Profiles and Intelligence.
 
 ---
 
 ## Supply
 
 **Purpose**  
-Capture, qualify, structure, and monitor the sources capable of fulfilling commercial demand.
+Capture, qualify, structure and monitor sources capable of fulfilling demand.
 
 **Commercial question answered**  
-What product is available, from whom, where, under what conditions, and with what level of reliability?
+What is available, from whom, where, under what conditions and with what reliability?
 
 **Primary inputs**  
-Producer data, mine output, refinery capacity, warehouse positions, inventory, specifications, origin, availability, pricing, logistics constraints, and supplier evidence.
+Producer, facility, inventory, specification, origin, availability, pricing and logistics evidence.
 
 **Primary outputs**  
-Qualified supply, inventory visibility, supplier readiness, matching candidates, opportunity inputs, and supply intelligence.
+Qualified supply, inventory visibility, supplier readiness and matching candidates.
 
 **Records owned**  
-Producers, mines, refineries, warehouses, and inventory.
+Producers, mines, refineries, warehouses and inventory.
 
 **Records referenced**  
-Companies, contacts, mandates, KYC/KYB, demand, matches, opportunities, deals, documents, and market intelligence.
+Network, Profiles, Demand, Opportunities, Matching, Deals and Documents.
 
 **Connected workspaces**  
-Network, Demand, Opportunities, Matching, Deals, Intelligence, Documents, and Governance.
+Actions, Inbox, Market Radar, Demand, Opportunities, Matching, Deals, Network, Profiles and Intelligence.
 
 ---
 
 ## Opportunities
 
 **Purpose**  
-Convert qualified commercial signals into managed opportunities before formal deal execution.
+Convert credible commercial signals into managed possibilities before formal execution.
 
 **Commercial question answered**  
-Which commercial possibilities are credible, valuable, actionable, and worth advancing?
-
-**Primary inputs**  
-Qualified demand, qualified supply, introductions, mandates, market signals, relationship context, and preliminary commercial terms.
-
-**Primary outputs**  
-Opportunity qualification, ownership, stage progression, next actions, value estimates, risks, and deal candidates.
+Which possibilities are credible, valuable, actionable and worth advancing?
 
 **Records owned**  
-Commercial opportunities, opportunity stages, qualification decisions, opportunity value estimates, and opportunity action plans.
-
-**Records referenced**  
-Demand, supply, matches, companies, contacts, mandates, intelligence, documents, and governance states.
+Opportunities, stages, qualification decisions, value estimates and opportunity plans.
 
 **Connected workspaces**  
-Demand, Supply, Matching, Deals, Network, Intelligence, Performance, Documents, and Governance.
+Actions, Inbox, Market Radar, Demand, Supply, Matching, Deals, Network, Profiles, Intelligence, Performance and Documents.
 
 ---
 
 ## Matching
 
 **Purpose**  
-Identify, evaluate, and manage commercial fit between demand and supply.
+Identify and evaluate fit between demand and supply.
 
 **Commercial question answered**  
-Which supply can credibly satisfy which demand, and why is the match commercially viable?
-
-**Primary inputs**  
-Demand specifications, supply specifications, pricing, geography, logistics, timing, mandates, relationship trust, compliance status, and commercial constraints.
-
-**Primary outputs**  
-Match candidates, fit scores, mismatch reasons, recommended actions, introduced pairings, and deal conversion routes.
+Which supply can satisfy which demand, and why is the match commercially viable?
 
 **Records owned**  
-Match records, match evaluations, fit rationale, mismatch reasons, and matching recommendations.
-
-**Records referenced**  
-Demand, supply, companies, contacts, opportunities, deals, intelligence, documents, and governance rules.
+Matches, evaluations, fit rationale, mismatch reasons and recommendations.
 
 **Connected workspaces**  
-Demand, Supply, Opportunities, Deals, Network, Intelligence, Documents, and Governance.
+Actions, Demand, Supply, Opportunities, Deals, Network, Profiles, Intelligence and Governance.
 
 ---
 
 ## Deals
 
 **Purpose**  
-Govern commercial execution from formal offer through settlement and commission.
+Govern execution from formal offer through settlement and commission.
 
 **Commercial question answered**  
-What must happen for this transaction to execute safely, lawfully, and profitably?
-
-**Primary inputs**  
-Qualified opportunities, approved matches, counterparties, mandates, commercial terms, compliance evidence, logistics information, and execution documents.
-
-**Primary outputs**  
-Executed agreements, controlled milestones, shipping progress, settlement status, commission outcomes, and transaction history.
+What must happen for the transaction to execute safely, lawfully and profitably?
 
 **Records owned**  
-SCO, FCO, SPA, contracts, shipping, settlement, commission, and execution documents.
-
-**Records referenced**  
-Demand, supply, matches, opportunities, companies, contacts, mandates, KYC/KYB, intelligence, performance, documents, and governance rules.
+SCO, FCO, SPA, contracts, shipping, settlement, commission and execution state.
 
 **Connected workspaces**  
-Opportunities, Matching, Demand, Supply, Network, Intelligence, Performance, Documents, and Governance.
+Actions, Inbox, Opportunities, Matching, Network, Profiles, Intelligence, Documents, Finance and Governance.
 
 ---
 
 ## Network
 
 **Purpose**  
-Maintain the commercial relationship graph, identity context, authority evidence, and trust history of the ecosystem.
+Maintain the commercial relationship graph, identity, authority and trust history.
 
 **Commercial question answered**  
-Who is involved, what role do they hold, what authority do they possess, and how much trust has been earned?
-
-**Primary inputs**  
-Company data, contact data, introductions, mandates, broker roles, relationship events, KYC, KYB, references, and trust evidence.
-
-**Primary outputs**  
-Verified entities, relationship context, authority visibility, trust history, compliance status, and network intelligence.
+Who is involved, what role and authority do they hold, and how much trust has been earned?
 
 **Records owned**  
-Companies, contacts, introducers, mandates, brokers, relationships, KYC, KYB, and trust history.
-
-**Records referenced**  
-Demand, supply, opportunities, matches, deals, intelligence, documents, and governance policies.
+Companies, contacts, introducers, mandates, brokers, relationships, KYC, KYB and trust history.
 
 **Connected workspaces**  
-Demand, Supply, Opportunities, Matching, Deals, Intelligence, Documents, and Governance.
+Actions, Inbox, Demand, Supply, Opportunities, Matching, Deals, Profiles, Intelligence, Documents, Finance and Governance.
+
+---
+
+## Profiles
+
+**Purpose**  
+Maintain evidence-backed institutional knowledge about every commercially relevant object.
+
+**Commercial question answered**  
+What is this, what is it worth, what affects that value, what do we know and what must still be verified?
+
+**Primary inputs**  
+Identity, specifications, valuations, comparables, market evidence, documents, communications, relationships, events and lessons.
+
+**Primary outputs**  
+Canonical profiles, acquisition theses, confidence-adjusted valuations, knowledge gaps, risks and decision support.
+
+**Records owned**  
+Universal profile identities, profile types, typed attributes, evidence, valuation observations, profile relationships and profile histories.
+
+**Records referenced**  
+Network identities, communications, documents, actions, market signals, opportunities and deals.
+
+**Connected workspaces**  
+All commercial workspaces, especially Market Radar, Intelligence, Network, Opportunities and Deals.
 
 ---
 
 ## Intelligence
 
 **Purpose**  
-Preserve and apply commercial understanding across people, markets, transactions, and time.
+Preserve and apply commercial understanding across markets, profiles, relationships and transactions.
 
 **Commercial question answered**  
-What does Sapphire know that should improve the next commercial decision?
-
-**Primary inputs**  
-CRI profiles, market information, transaction outcomes, relationship observations, lessons learned, analyst findings, and AI-supported synthesis.
-
-**Primary outputs**  
-Commercial memory, risk signals, recommendations, contextual briefings, lessons, and market intelligence.
+What does Sapphire know that should improve the next decision?
 
 **Records owned**  
-CRI, market intelligence, lessons learned, and commercial memory.
-
-**Records referenced**  
-Demand, supply, opportunities, matches, deals, network records, performance data, documents, and governance rules.
+CRI, market intelligence, lessons learned, commercial memory, analysis and synthesis.
 
 **Connected workspaces**  
-All commercial workspaces, especially Network, Opportunities, Matching, Deals, and Performance.
+All workspaces.
 
 ---
 
 ## Performance
 
 **Purpose**  
-Measure whether Sapphire is creating commercial value efficiently, reliably, and repeatably.
+Measure whether Sapphire creates value efficiently, reliably and repeatably.
 
 **Commercial question answered**  
-Where is value being created, lost, delayed, or improved?
-
-**Primary inputs**  
-Revenue, commission, stage movement, conversion events, lead quality, supplier outcomes, closer activity, deal execution, and time-based performance data.
-
-**Primary outputs**  
-Performance scorecards, conversion insight, revenue visibility, quality indicators, trend analysis, and improvement priorities.
+Where is value being created, lost, delayed or improved?
 
 **Records owned**  
-Revenue, commission, conversion, lead quality, supplier performance, and closer performance metrics.
-
-**Records referenced**  
-Demand, supply, opportunities, matches, deals, network, intelligence, documents, and governance configurations.
+Revenue, commission, conversion, lead quality, supplier performance, closer performance, research performance and mission execution metrics.
 
 **Connected workspaces**  
-Dashboard, Demand, Supply, Opportunities, Matching, Deals, Network, Intelligence, and Governance.
+HOME, Actions, Demand, Supply, Opportunities, Matching, Deals, Network, Profiles and Intelligence.
 
 ---
 
 ## Documents
 
 **Purpose**  
-Provide a controlled surface for commercial evidence, working documents, execution documents, and institutional records.
+Provide controlled evidence, working documents, execution documents and institutional records.
 
 **Commercial question answered**  
-What evidence or document supports this commercial action, obligation, authority, or decision?
-
-**Primary inputs**  
-Uploaded files, generated documents, signed agreements, compliance evidence, correspondence, templates, and linked records.
-
-**Primary outputs**  
-Versioned documents, approved templates, linked evidence, signature state, access-controlled records, and document history.
+What evidence supports this action, obligation, authority, valuation or decision?
 
 **Records owned**  
-Document files, versions, templates, document metadata, signatures, approvals, and retention states.
-
-**Records referenced**  
-All records that documents evidence, govern, or support.
+Files, versions, templates, metadata, signatures, approvals and retention states.
 
 **Connected workspaces**  
 All workspaces.
+
+---
+
+## Finance
+
+**Purpose**  
+Coordinate banks, financial counterparties, transaction finance, payment obligations and financial evidence.
+
+**Commercial question answered**  
+How is this activity funded, paid, settled and financially controlled?
+
+**Records owned**  
+Banking relationships, finance applications, payment instructions, settlement evidence, fees and financial approvals, subject to Governance.
+
+**Connected workspaces**  
+Actions, Inbox, Deals, Network, Profiles, Performance, Documents and Governance.
 
 ---
 
 ## Governance
 
 **Purpose**  
-Control authority, policy, workflow behaviour, AI boundaries, and system accountability.
+Control authority, policy, workflow behaviour, AI boundaries and accountability.
 
 **Commercial question answered**  
-Who may do what, under which rule, with what evidence, and with what audit trail?
-
-**Primary inputs**  
-Organisational roles, permission models, policies, workflow definitions, AI settings, approval rules, and system events.
-
-**Primary outputs**  
-Permissions, enforced policies, workflow controls, AI configuration, approvals, exceptions, and audit records.
+Who may do what, under which rule, with what evidence and audit trail?
 
 **Records owned**  
-Permissions, policies, workflow rules, AI configuration, and audit.
-
-**Records referenced**  
-Every record and action subject to authority, policy, workflow, AI, or audit control.
+Permissions, policies, workflow rules, AI configuration, integration policy and audit.
 
 **Connected workspaces**  
 All workspaces.
 
 ---
 
-## Surface ownership rule
+## Universal surface ownership rule
 
-A record has one primary owning workspace even when it is visible elsewhere.
+Every record has one primary owning workspace even when visible elsewhere.
 
-Other workspaces may reference, summarise, filter, or drill into that record, but they must not silently create competing ownership models.
+Other workspaces may reference, summarise, filter or drill into it, but must not create competing ownership models.
 
-Navigation follows the user's commercial intent. Data architecture remains an implementation concern beneath the workspace layer.
+Actions owns work. Inbox owns communication. Profiles owns canonical object knowledge. Market Radar owns time-sensitive commercial signals. The originating business workspace continues to own its operational record.
