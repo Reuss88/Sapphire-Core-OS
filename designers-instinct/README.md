@@ -21,6 +21,7 @@ It does not redefine business logic, ownership, authority, workflow, or commerci
 - Commercial action outweighs decorative analytics.
 - AI may recommend, explain, and prioritise, but never grants authority.
 - Workflow state never implies permission.
+- Actions owns work; Inbox owns communication; Profiles owns canonical object knowledge; Market Radar owns time-sensitive commercial signals.
 
 ## Implementation doctrine rule
 
@@ -39,12 +40,13 @@ Page doctrine extends the cross-product laws in this directory. It does not repl
 
 ## Files
 
-- `dashboard-landing-principles.md` — doctrine for the commercial command centre.
+- `dashboard-landing-principles.md` — governing principles for the commercial command centre.
 - `product-surface-map.md` — permanent workspace architecture and ownership map.
 - `navigation-philosophy.md` — principles governing movement through the product.
 - `parity-laws-v0.md` — initial cross-product design laws.
 - `roadmap.md` — path from Designers Instinct to a locked design system.
-- `pages/dashboard-landing/` — first implementation-grade page doctrine, data contract, token contract and Codex handoff.
+- `doctrine/` — Actions and Missions, Inbox and Communications, Universal Profile Framework, and Market Radar / Hot Right Now doctrine.
+- `pages/dashboard-landing/` — first implementation-grade HOME doctrine, data contract, token contract and Codex handoff.
 
 ## Status
 
