@@ -13,6 +13,27 @@ Before reading this mission in detail or writing code, read and follow:
 
 That file loads the Sapphire Engineering Framework, including workflow, implementation, database, UI parity, security, testing and Codex agent rules. This mission supplements that framework; it does not replace it.
 
+## Prerequisites — mandatory
+
+Do not execute this mission until both prerequisite missions have returned PASS:
+
+1. `engineering/missions/SUPABASE-DEV-RUNTIME-001.md`
+2. `engineering/missions/IDENTITY-ACCESS-001.md`
+
+Before implementation, verify the repository contains the outputs of those missions and that:
+
+- an approved Supabase development/test runtime can apply migrations and execute RLS tests;
+- authenticated actor identity is server-resolvable;
+- organisation membership/isolation is implemented and tested;
+- team scope can be evaluated where required;
+- capability checks are server-side;
+- canonical authority evaluation is reusable by Actions;
+- assignment and visibility are proven not to imply authority.
+
+If either prerequisite is PARTIAL, FAIL or absent, stop and return PARTIAL with the missing prerequisite. Do not recreate identity/access/runtime infrastructure inside Actions.
+
+See `engineering/missions/README.md` for the canonical dependency chain.
+
 ## Mission objective
 Build the first production-grade **Actions** workspace for Sapphire Core OS using the existing architecture and design doctrine in this repository.
 
@@ -131,6 +152,7 @@ This mission ends at the **Director-reviewable Actions soft build plus working e
 ## Non-negotiables
 - No duplicate task systems.
 - No duplicate approval system.
+- No duplicate identity/access system.
 - No frontend-only execution truth.
 - No hard deletion of audited history.
 - No AI authority escalation.
