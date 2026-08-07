@@ -1,14 +1,25 @@
 # CODEX MISSION — Actions Workspace v1
 
+## Mission ID
+`ACTIONS-001`
+
 ## Repository
 `Reuss88/Sapphire-Core-OS`
+
+## Engineering entrypoint — mandatory
+Before reading this mission in detail or writing code, read and follow:
+
+`engineering/START-HERE-CODEX.md`
+
+That file loads the Sapphire Engineering Framework, including workflow, implementation, database, UI parity, security, testing and Codex agent rules. This mission supplements that framework; it does not replace it.
 
 ## Mission objective
 Build the first production-grade **Actions** workspace for Sapphire Core OS using the existing architecture and design doctrine in this repository.
 
 This is not a generic task manager. It is the execution engine for missions, tasks, follow-ups, waiting/blocking states, linked approvals/decisions, evidence and cross-workspace commercial work.
 
-## Mandatory reading order
+## Mandatory workspace reading order
+After loading the Engineering Framework, read:
 1. `designers-instinct/doctrine/actions-missions-doctrine.md`
 2. `architecture/actions-execution/MASTER-ACTIONS-ARCHITECTURE-v1.md`
 3. `designers-instinct/pages/actions/README.md`
@@ -125,3 +136,6 @@ This mission ends at the **Director-reviewable Actions soft build plus working e
 - No AI authority escalation.
 - No schema guesses when repository inspection can answer the question.
 - No redesign of HOME as part of this mission.
+
+## Mission result
+Return the exact Mission Result format required by `engineering/WORKFLOW.md`. Do not report PASS unless the required checks were actually run and passed.
