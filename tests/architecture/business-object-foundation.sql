@@ -52,14 +52,17 @@ select sca_core.add_business_object_identifier(
   null
 );
 
+select set_config('test.business_object_id', :'business_object_id', true);
+
 do $$
 declare
+  v_business_object_id uuid := current_setting('test.business_object_id')::uuid;
   v_count integer;
   v_current bigint;
 begin
   select count(*) into v_count
   from sca_core.business_object_version
-  where business_object_id = :'business_object_id'::uuid;
+  where business_object_id = v_business_object_id;
 
   if v_count <> 2 then
     raise exception 'Expected 2 Business Object versions, found %', v_count;
@@ -67,7 +70,7 @@ begin
 
   select current_version_no into v_current
   from sca_core.business_object
-  where id = :'business_object_id'::uuid;
+  where id = v_business_object_id;
 
   if v_current <> 2 then
     raise exception 'Expected current_version_no 2, found %', v_current;

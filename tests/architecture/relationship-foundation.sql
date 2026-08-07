@@ -94,8 +94,13 @@ select sca_core.add_relationship_identifier(
   null
 );
 
+select set_config('test.source_object_id', :'source_object_id', true);
+select set_config('test.target_object_id', :'target_object_id', true);
+select set_config('test.relationship_id', :'relationship_id', true);
+
 do $$
 declare
+  v_relationship_id uuid := current_setting('test.relationship_id')::uuid;
   v_count integer;
   v_current bigint;
   v_open_count integer;
@@ -103,7 +108,7 @@ declare
 begin
   select count(*) into v_count
   from sca_core.relationship_version
-  where relationship_id = :'relationship_id'::uuid;
+  where relationship_id = v_relationship_id;
 
   if v_count <> 2 then
     raise exception 'Expected 2 Relationship versions, found %', v_count;
@@ -111,7 +116,7 @@ begin
 
   select current_version_no into v_current
   from sca_core.relationship
-  where id = :'relationship_id'::uuid;
+  where id = v_relationship_id;
 
   if v_current <> 2 then
     raise exception 'Expected current_version_no 2, found %', v_current;
@@ -119,7 +124,7 @@ begin
 
   select count(*) into v_open_count
   from sca_core.relationship_version
-  where relationship_id = :'relationship_id'::uuid
+  where relationship_id = v_relationship_id
     and effective_to is null;
 
   if v_open_count <> 1 then
@@ -128,7 +133,7 @@ begin
 
   select count(*) into v_event_count
   from sca_audit.relationship_event
-  where relationship_id = :'relationship_id'::uuid;
+  where relationship_id = v_relationship_id;
 
   if v_event_count < 3 then
     raise exception 'Expected at least 3 Relationship events, found %', v_event_count;
@@ -155,8 +160,8 @@ begin
     perform sca_core.create_relationship(
       '00000000-0000-0000-0000-000000000001'::uuid,
       'missing_relationship_type',
-      :'source_object_id'::uuid,
-      :'target_object_id'::uuid,
+      current_setting('test.source_object_id')::uuid,
+      current_setting('test.target_object_id')::uuid,
       '{}'::jsonb,
       now(),
       'migration',
@@ -180,8 +185,8 @@ begin
     perform sca_core.create_relationship(
       '00000000-0000-0000-0000-000000000001'::uuid,
       'test_relationship',
-      :'target_object_id'::uuid,
-      :'source_object_id'::uuid,
+      current_setting('test.target_object_id')::uuid,
+      current_setting('test.source_object_id')::uuid,
       '{}'::jsonb,
       now(),
       'migration',
@@ -208,13 +213,14 @@ select sca_core.retire_relationship(
 
 do $$
 declare
+  v_relationship_id uuid := current_setting('test.relationship_id')::uuid;
   v_active boolean;
   v_retired_at timestamptz;
 begin
   select is_active, retired_at
     into v_active, v_retired_at
   from sca_core.relationship
-  where id = :'relationship_id'::uuid;
+  where id = v_relationship_id;
 
   if v_active or v_retired_at is null then
     raise exception 'Relationship retirement behaviour failed';
