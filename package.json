@@ -1,0 +1,12 @@
+{
+  "name": "sapphire-core-os",
+  "private": true,
+  "packageManager": "pnpm@11.16.0",
+  "scripts": {
+    "build": "pnpm --filter @sapphire/web build",
+    "dev": "pnpm --filter @sapphire/web dev",
+    "lint": "pnpm --filter @sapphire/web lint",
+    "test": "pnpm --filter @sapphire/web test && node scripts/validate-actions-contract.mjs",
+    "typecheck": "pnpm --filter @sapphire/web typecheck"
+  }
+}
