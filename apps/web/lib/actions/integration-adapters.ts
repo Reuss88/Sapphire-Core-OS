@@ -11,6 +11,9 @@ export interface ActionsRealtimeInvalidation {
   missionId?: string | null;
   actionItemId?: string | null;
   ownerUserId?: string | null;
+  activityId?: string | null;
+  activitySubjectType?: "mission" | "action_item" | null;
+  activitySubjectId?: string | null;
 }
 
 export const workspaceRecordAdapter: GovernedRecordAdapter = {
@@ -31,5 +34,7 @@ export function queueKeysForInvalidation(event: ActionsRealtimeInvalidation) {
     event.ownerUserId ? `actions:owner:${event.ownerUserId}` : null,
     event.missionId ? `actions:mission:${event.missionId}` : null,
     event.actionItemId ? `actions:item:${event.actionItemId}` : null,
+    event.activityId ? `activity:${event.activityId}` : null,
+    event.activitySubjectType && event.activitySubjectId ? `activity:journal:${event.activitySubjectType}:${event.activitySubjectId}` : null,
   ].filter((key): key is string => Boolean(key));
 }

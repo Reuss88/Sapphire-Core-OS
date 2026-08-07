@@ -3,6 +3,7 @@
 import type { ActionLens, ActionSummary, ActionWorkspaceSnapshot, MissionSummary } from "@sapphire/core-types";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { WorkJournal } from "./work-journal";
 
 const lenses: Array<{ id: ActionLens; label: string; symbol: string }> = [
   { id: "my_actions", label: "My Actions", symbol: "⌁" },
@@ -45,6 +46,7 @@ export function ActionsWorkspace({ initialSnapshot }: { initialSnapshot: ActionW
   const [dialog, setDialog] = useState<"action" | "mission" | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [inspectorOpen, setInspectorOpen] = useState(false);
+  const [inspectorTab, setInspectorTab] = useState<"overview" | "journal">("overview");
   const searchRef = useRef<HTMLInputElement>(null);
 
   const visibleActions = useMemo(() => {
@@ -179,16 +181,20 @@ export function ActionsWorkspace({ initialSnapshot }: { initialSnapshot: ActionW
           </section>
 
           <aside className={`context-inspector ${inspectorOpen ? "" : "closed"}`} aria-label={lens === "missions" ? "Selected mission context" : "Selected action context"}>
-            {lens === "missions" && selectedMission ? <MissionInspector mission={selectedMission} onClose={() => setInspectorOpen(false)} onCommand={guardedCommand} /> : selected ? <>
+            {lens === "missions" && selectedMission ? <MissionInspector mission={selectedMission} entries={initialSnapshot.journals[selectedMission.id] ?? []} onClose={() => setInspectorOpen(false)} onCommand={guardedCommand} /> : selected ? <>
               <div className="inspector-heading"><div><p className="eyebrow">ACTION CONTEXT</p><span className={`status-label ${selected.status}`}>{selected.status.replaceAll("_", " ")}</span></div><div className="inspector-heading-actions"><button className="inspector-close" type="button" aria-label="Close action inspector" onClick={() => setInspectorOpen(false)}>×</button><button type="button" aria-label="More action commands">•••</button></div></div>
               <h2>{selected.title}</h2><p className="required-outcome">{selected.requiredOutcome}</p>
+              <div className="inspector-tabs" role="tablist" aria-label="Action context views"><button type="button" role="tab" aria-selected={inspectorTab === "overview"} onClick={() => setInspectorTab("overview")}>Overview</button><button type="button" role="tab" aria-selected={inspectorTab === "journal"} onClick={() => setInspectorTab("journal")}>Work Journal <span>{(initialSnapshot.journals[selected.id] ?? []).length}</span></button></div>
+              {inspectorTab === "overview" ? <>
               <div className="consequence-card"><span>COMMERCIAL CONSEQUENCE</span><p>{selected.commercialConsequence}</p></div>
               <dl className="facts-grid"><div><dt>Owner</dt><dd><span className="avatar">{selected.owner?.initials ?? "?"}</span>{selected.owner?.name ?? "Unowned"}</dd></div><div><dt>Due</dt><dd>{shortDate(selected.dueAt)}</dd></div><div><dt>Priority</dt><dd>{selected.priority}</dd></div><div><dt>Kind</dt><dd>{selected.itemKind.replaceAll("_", " ")}</dd></div></dl>
               {(selected.blockedReason || selected.waitingReason) && <section className="condition-panel"><strong>{selected.blockedReason ? "Blocked" : "Waiting on"}</strong><p>{selected.blockedReason ?? selected.waitingReason}</p>{selected.expectedResumeAt && <small>Expected {shortDate(selected.expectedResumeAt)}</small>}</section>}
               <section className="inspector-section"><div className="section-title"><h3>Why this ranks here</h3><span>{selected.rankScore}/100</span></div><ul>{selected.rankFactors.map((factor) => <li key={factor}>{factor}</li>)}</ul></section>
               <section className="inspector-section"><div className="section-title"><h3>Linked records</h3><span>{selected.links.length}</span></div>{selected.links.map((link) => <Link className="record-link" href={link.href} key={link.id}><span>◇</span><span><strong>{link.label}</strong><small>{link.workspace}</small></span><b>↗</b></Link>)}</section>
               <section className="inspector-section evidence"><div className="section-title"><h3>Evidence</h3><span>{selected.evidenceRequired ? "Required" : "Optional"}</span></div><p>{selected.evidenceRequired ? "Completion remains unavailable until governed evidence is attached." : "A completion note is sufficient unless policy changes."}</p><button type="button" onClick={() => guardedCommand("Add evidence")}>＋ Link evidence</button></section>
+              <div className="completion-policy"><strong>Completion contract</strong><span>{selected.completionOutcomeRequired ? "A published outcome Activity is required." : "Outcome Activity is optional."} {selected.evidenceRequired ? "Governed evidence is also required." : "No evidence gate applies."}</span></div>
               <div className="inspector-actions"><button type="button" className="secondary-button" onClick={() => guardedCommand("Mark waiting")}>Mark waiting</button><button type="button" className="primary-button" onClick={() => guardedCommand(selected.authorityRequired ? "Open Governance approval" : "Complete action")}>{selected.authorityRequired ? "Open approval" : "Complete"}</button></div>
+              </> : <WorkJournal entries={initialSnapshot.journals[selected.id] ?? []} subjectLabel={selected.title} onCommand={guardedCommand} />}
             </> : <p>Select an action to inspect its authoritative context.</p>}
           </aside>
         </div>
@@ -202,16 +208,20 @@ export function ActionsWorkspace({ initialSnapshot }: { initialSnapshot: ActionW
   );
 }
 
-function MissionInspector({ mission, onClose, onCommand }: { mission: MissionSummary; onClose: () => void; onCommand: (label: string) => void }) {
+function MissionInspector({ mission, entries, onClose, onCommand }: { mission: MissionSummary; entries: import("@sapphire/core-types").WorkJournalEntry[]; onClose: () => void; onCommand: (label: string) => void }) {
+  const [tab, setTab] = useState<"overview" | "journal">("overview");
   const exposure = mission.valueExposure ? new Intl.NumberFormat("en-GB", { style: "currency", currency: mission.valueExposure.currency, maximumFractionDigits: 0 }).format(mission.valueExposure.amount) : "Not quantified";
   return <>
     <div className="inspector-heading"><div><p className="eyebrow">MISSION CONTEXT</p><span className={`status-label ${mission.status}`}>{mission.status.replaceAll("_", " ")}</span></div><div className="inspector-heading-actions"><button className="inspector-close" type="button" aria-label="Close mission inspector" onClick={onClose}>×</button><button type="button" aria-label="More mission commands">•••</button></div></div>
     <h2>{mission.title}</h2><p className="required-outcome">{mission.objective}</p>
+    <div className="inspector-tabs" role="tablist" aria-label="Mission context views"><button type="button" role="tab" aria-selected={tab === "overview"} onClick={() => setTab("overview")}>Overview</button><button type="button" role="tab" aria-selected={tab === "journal"} onClick={() => setTab("journal")}>Work Journal <span>{entries.length}</span></button></div>
+    {tab === "overview" ? <>
     <div className="consequence-card"><span>COMMERCIAL CONTEXT</span><p>{mission.commercialContext} · {exposure} exposure</p></div>
     <dl className="facts-grid"><div><dt>Owner</dt><dd><span className="avatar">{mission.owner.initials}</span>{mission.owner.name}</dd></div><div><dt>Target</dt><dd>{shortDate(mission.targetAt)}</dd></div><div><dt>Priority</dt><dd>{mission.priority}</dd></div><div><dt>Health</dt><dd>{mission.health.replaceAll("_", " ")}</dd></div></dl>
     <section className="mission-progress-card"><div><span>Mission progress</span><strong>{mission.progressPercent}%</strong></div><span><i style={{ width: `${mission.progressPercent}%` }} /></span></section>
     <section className="inspector-section"><div className="section-title"><h3>Next milestone</h3><span>{mission.openActionCount} open actions</span></div><p className="mission-milestone">{mission.nextMilestone}</p></section>
     <section className="inspector-section"><div className="section-title"><h3>Execution conditions</h3><span>{mission.blockerCount} blockers</span></div><ul><li>Progress is derived from authoritative action state.</li><li>Health remains a distinct Director-reviewed assessment.</li><li>Authority stays with Governance for protected decisions.</li></ul></section>
     <div className="inspector-actions"><button type="button" className="secondary-button" onClick={() => onCommand("Open mission plan")}>Open plan</button><button type="button" className="primary-button" onClick={() => onCommand("Create linked action")}>Create action</button></div>
+    </> : <WorkJournal entries={entries} subjectLabel={mission.title} onCommand={onCommand} />}
   </>;
 }

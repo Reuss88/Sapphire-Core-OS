@@ -26,6 +26,14 @@ export type ActionKind =
   | "coordination";
 
 export type ActionPriority = "critical" | "high" | "normal" | "low";
+export type ActivityType =
+  | "note" | "comment" | "instruction" | "call_attempt" | "call_connected"
+  | "meeting" | "research_update" | "outcome" | "status_update" | "handoff"
+  | "coaching_note" | "evidence_added" | "message_summary" | "ai_summary"
+  | "escalation_note" | "document_shared" | "system_observation";
+export type ActivityVisibilityScope =
+  | "private_actor" | "director_only" | "assigned_users" | "mission_team"
+  | "workspace_team" | "organisation";
 export type ActionLens =
   | "my_actions"
   | "missions"
@@ -86,10 +94,34 @@ export interface ActionSummary {
   expectedResumeAt: string | null;
   authorityRequired: boolean;
   evidenceRequired: boolean;
+  completionOutcomeRequired: boolean;
   rankScore: number;
   rankFactors: string[];
   commercialConsequence: string;
   updatedAt: string;
+}
+
+export interface WorkJournalLink {
+  linkedType: GovernedRecordLink["type"] | "action_item" | "mission" | "activity";
+  linkedId: string;
+  label: string;
+  workspace: string;
+}
+
+export interface WorkJournalEntry {
+  id: string;
+  entryKind: "activity" | "execution_event" | "evidence";
+  occurredAt: string;
+  actor: ActorSummary;
+  entryType: ActivityType | "state_transition" | "evidence_linked";
+  visibilityScope: ActivityVisibilityScope | null;
+  body: string;
+  structuredContent: Record<string, string | number | boolean | null>;
+  sourceWorkspace: string;
+  provenanceKind: "human_entry" | "external_integration" | "dataset_import" | "document_extraction" | "system_calculation" | "ai_assisted_preparation" | "authorised_automation" | "migration" | "correction";
+  provenanceLabel?: string;
+  links: WorkJournalLink[];
+  canCreateFollowUp: boolean;
 }
 
 export interface ActionWorkspaceSnapshot {
@@ -97,6 +129,7 @@ export interface ActionWorkspaceSnapshot {
   actor: ActorSummary;
   actions: ActionSummary[];
   missions: MissionSummary[];
+  journals: Record<string, WorkJournalEntry[]>;
 }
 
 export interface ActionsRepository {
@@ -104,4 +137,5 @@ export interface ActionsRepository {
   getMissions(): Promise<MissionSummary[]>;
   transitionItem(id: string, nextStatus: ActionStatus, reason?: string): Promise<ActionSummary>;
   addEvidence(id: string, link: GovernedRecordLink, note?: string): Promise<ActionSummary>;
+  getWorkJournal(subjectType: "mission" | "action_item", subjectId: string): Promise<WorkJournalEntry[]>;
 }
