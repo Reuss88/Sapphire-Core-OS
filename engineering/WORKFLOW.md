@@ -49,6 +49,58 @@ For new workspaces:
 3. implement backend contracts only after existing schema has been mapped;
 4. never encode permanent business rules only in frontend fixtures.
 
+## Director Review Package — mandatory for all UI missions
+
+A UI mission is not complete until a Director Review Package has been produced.
+
+Required deliverables:
+
+1. **Local URL**
+   - A running local application URL for the implemented surface, for example `http://localhost:3000/actions`.
+   - The URL must be verified as reachable during the mission.
+
+2. **Desktop screenshot**
+   - Full Director-review capture at the approved or primary desktop breakpoint.
+   - When a canonical desktop parity viewport exists, use that viewport.
+
+3. **Tablet screenshot**
+   - Capture at the repository-approved tablet breakpoint or the mission-defined tablet breakpoint.
+
+4. **Mobile screenshot**
+   - Capture at the repository-approved mobile/PWA breakpoint or the mission-defined mobile breakpoint.
+
+5. **Mission Result**
+   - PASS / PARTIAL / FAIL.
+   - Checks executed and actual outcomes.
+   - Outstanding issues, deferred work, risks and recommendation.
+
+6. **Git information**
+   - Commit SHA.
+   - Branch.
+   - Pull request reference when applicable.
+   - Confirmation of whether the branch was pushed successfully.
+
+7. **Repository changes**
+   - Files created.
+   - Files modified.
+   - Components added or changed.
+   - Migrations created or modified when applicable.
+   - RPCs/functions/triggers/RLS changes when applicable.
+
+8. **Visual regression evidence when parity is locked**
+   - If a Director-approved parity reference exists, include a comparison against the canonical reference.
+   - State explicitly whether parity was achieved.
+   - List any known visual deltas.
+   - Intentional deviation from locked parity requires Director approval; engineering must fix the implementation rather than silently reinterpret the approved design.
+
+### UI mission completion rule
+
+A UI mission may not be marked PASS until the Director Review Package has been delivered and all required mission checks have passed.
+
+Visual review is a mandatory engineering deliverable, not an optional courtesy.
+
+If the application cannot be started locally, screenshots cannot be produced, or a required parity comparison cannot be performed, the mission must be marked PARTIAL unless the mission explicitly defines a different approved review mechanism.
+
 ## Mission Result format
 
 Codex must end every mission with:
@@ -66,3 +118,5 @@ Codex must end every mission with:
 - Risks or doctrine conflicts
 - Ready for Director Review: YES / NO
 - Recommended next action
+
+For UI missions, the Mission Result must also include or accompany the complete Director Review Package defined above.
