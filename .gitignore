@@ -1,5 +1,7 @@
 .env
 .env.local
+supabase/.temp/
+supabase/.branches/
 .runtime/
 .cache/
 .venv/

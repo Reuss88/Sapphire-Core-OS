@@ -29,6 +29,7 @@ This milestone establishes the canonical repository structure, business doctrine
 - [Hermes Local Nemotron Implementation Report](docs/reports/2026-07-28-hermes-local-nemotron-implementation.md)
 - [Mission Debrief Bridge](debriefs/README.md)
 - [Engineering Framework](engineering/README.md)
+- [Supabase Development Workflow](engineering/SUPABASE-DEVELOPMENT-WORKFLOW.md)
 - [Codex Start Here](engineering/codex/START-HERE.md)
 - [Contributing](CONTRIBUTING.md)
 
