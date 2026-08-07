@@ -43,6 +43,9 @@ Page doctrine extends the cross-product laws in this directory. It does not repl
 - `product-surface-map.md` — permanent workspace architecture and ownership map.
 - `navigation-philosophy.md` — principles governing movement through the product.
 - `parity-laws-v0.md` — initial cross-product design laws.
+- `constitutional/` — binding approved-image-to-web parity law and amendment control.
+- `templates/` — reusable human and machine-readable parity handoff contracts.
+- `parity-handoffs/` — versioned, self-contained approved-image implementation packages.
 - `roadmap.md` — path from Designers Instinct to a locked design system.
 - `doctrine/` — execution, communication, universal profile and Market Radar doctrine.
 - `sapphire-design-system/` — authoritative visual, motion, semantic, component and Next.js 16 implementation design system.
@@ -51,3 +54,5 @@ Page doctrine extends the cross-product laws in this directory. It does not repl
 ## Status
 
 This directory is permanent design governance for the entire Sapphire Core OS product surface. Changes must preserve the distinction between operating doctrine and product experience.
+
+For any page commissioned from an approved raster design, `CS-UI-001` is the controlling implementation and verification standard. Page-specific missions may add constraints but may not weaken its asset-integrity, evidence or approval gates.

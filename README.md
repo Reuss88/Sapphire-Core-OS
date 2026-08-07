@@ -24,6 +24,8 @@ This milestone establishes the canonical repository structure, business doctrine
 - [Master Architecture](architecture/MASTER-ARCHITECTURE.md)
 - [Architecture Status](architecture/STATUS.md)
 - [Repository Governance](GOVERNANCE.md)
+- [Approved Image to Web Parity Constitution](designers-instinct/constitutional/CS-UI-001-APPROVED-IMAGE-TO-WEB-PARITY-CONSTITUTION.md)
+- [Approved Image Handoff Template](designers-instinct/templates/APPROVED-IMAGE-TO-WEB-HANDOFF-TEMPLATE.md)
 - [Roadmap](docs/roadmap/ROADMAP.md)
 - [Skylar (SK) Hermes Local Nemotron Runtime](docs/runtime/HERMES-LOCAL-NEMOTRON.md)
 - [Hermes Local Nemotron Implementation Report](docs/reports/2026-07-28-hermes-local-nemotron-implementation.md)
