@@ -2,22 +2,30 @@
 
 ## Purpose
 
-This directory governs how Sapphire Core OS is implemented by Codex and future engineering agents. It is development infrastructure only. It does not define product behaviour and must never override Broker OS doctrine, architecture, Designers Instinct, Governance, or Director-approved parity references.
+This directory governs how Sapphire Core OS is implemented by Codex and future engineering agents. It is development infrastructure only. It does not define product behaviour and must never override Broker OS doctrine, canonical architecture, Designers Instinct, Governance, or Director-approved parity references.
 
-## Codex entrypoint
+## Single Codex entrypoint
 
-Codex must start here for every implementation mission.
+For every implementation mission, Codex starts with:
 
-Read in this order:
+`engineering/START-HERE-CODEX.md`
 
-1. `engineering/README.md`
-2. `engineering/WORKFLOW.md`
-3. `engineering/IMPLEMENTATION-STANDARDS.md`
-4. `engineering/DATABASE-STANDARDS.md` when data/backend work is involved
-5. `engineering/UI-PARITY-STANDARDS.md` when UI work is involved
-6. `engineering/codex/AGENT-RULES.md`
-7. the mission file
-8. all doctrine and architecture referenced by the mission
+The Director should not need to reteach Codex the framework. The simplest instruction is:
+
+> Read `engineering/START-HERE-CODEX.md`, then execute `<mission-file>`.
+
+## Framework files
+
+- `START-HERE-CODEX.md` — mandatory entrypoint and shortest operating instruction.
+- `WORKFLOW.md` — mission lifecycle, pre-flight, stop conditions and Mission Result.
+- `IMPLEMENTATION-STANDARDS.md` — Next.js, TypeScript and implementation discipline.
+- `DATABASE-STANDARDS.md` — Supabase, DDL, RPC, functions, triggers, RLS, realtime and audit rules.
+- `UI-PARITY-STANDARDS.md` — Designers Instinct and Director-approved parity implementation rules.
+- `SECURITY-SAFETY-STANDARDS.md` — secrets, authority, tenancy, mutation and migration safety.
+- `TESTING-QUALITY-STANDARDS.md` — verification requirements and PASS discipline.
+- `MISSION-TEMPLATE.md` — standard structure for future engineering missions.
+- `REVIEW-TEMPLATE.md` — standard Director/engineering review record.
+- `codex/AGENT-RULES.md` — Codex-specific behaviour inside Sapphire.
 
 ## Authority order
 
@@ -44,4 +52,8 @@ Product-specific missions remain with their workspace doctrine, for example:
 
 `designers-instinct/pages/actions/codex-mission-actions-v1.md`
 
-The Engineering Framework supplies the permanent execution rules so missions can remain concise and consistent.
+The Engineering Framework supplies permanent execution rules so workspace missions remain focused on the feature being built rather than repeating engineering policy.
+
+## Lifecycle
+
+The framework remains in the repository as durable engineering governance. It is not runtime product code and should not be bundled into the client. After the initial product build it remains useful for maintenance, migrations, refactors, new workspaces and future engineering agents; it does not need to be deleted or archived merely because v1 ships.
