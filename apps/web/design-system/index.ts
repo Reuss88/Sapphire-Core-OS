@@ -5,3 +5,4 @@ export * from "./primitives";
 export * from "./shell";
 export * from "./tab-collection";
 export * from "./tokens";
+export * from "./workspace-registry";

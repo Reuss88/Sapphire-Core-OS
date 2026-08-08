@@ -4,31 +4,12 @@ import Link from "next/link";
 import type { FocusEvent, MouseEventHandler, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { IconButton, Input } from "./primitives";
+import { workspaceNavigation } from "./workspace-registry";
+
+export { workspaceNavigation } from "./workspace-registry";
+export type { WorkspaceNavigationItem } from "./workspace-registry";
 
 export const SAPPHIRE_NAV_PIN_STORAGE_KEY = "sapphire.shell.nav-pinned.v1";
-
-export interface WorkspaceNavigationItem {
-  label: string;
-  href: string;
-  symbol: string;
-}
-export const workspaceNavigation: WorkspaceNavigationItem[] = [
-  { label: "Home", href: "/dashboard", symbol: "◇" },
-  { label: "Actions", href: "/actions", symbol: "◆" },
-  { label: "Inbox", href: "/inbox", symbol: "◇" },
-  { label: "Market Radar", href: "/market-radar", symbol: "◇" },
-  { label: "Demand", href: "/demand", symbol: "◇" },
-  { label: "Supply", href: "/supply", symbol: "◇" },
-  { label: "Opportunities", href: "/opportunities", symbol: "◇" },
-  { label: "Matching", href: "/matching", symbol: "◇" },
-  { label: "Deals", href: "/deals", symbol: "◇" },
-  { label: "Network", href: "/network", symbol: "◇" },
-  { label: "Profiles", href: "/profiles", symbol: "◇" },
-  { label: "Intelligence", href: "/intelligence", symbol: "◇" },
-  { label: "Documents", href: "/documents", symbol: "◇" },
-  { label: "Finance", href: "/finance", symbol: "◇" },
-  { label: "Governance", href: "/governance", symbol: "◇" },
-];
 
 export interface SapphireShellProps {
   activeWorkspace: string;

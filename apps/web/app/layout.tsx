@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Actions | Sapphire Core OS",
-  description: "Accountable commercial execution for Sapphire Core OS.",
+  title: "Sapphire Core OS",
+  description: "Director command, accountable commercial execution and governed intelligence.",
   manifest: "/manifest.webmanifest",
   applicationName: "Sapphire Core OS",
 };
