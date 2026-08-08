@@ -1,0 +1,92 @@
+:root {
+  color-scheme: dark;
+  --sapphire-color-canvas: #090c14;
+  --sapphire-color-canvas-deep: #060910;
+  --sapphire-color-surface: #111826;
+  --sapphire-color-surface-subtle: #0d1420;
+  --sapphire-color-elevated: #1a2234;
+  --sapphire-color-border: #2a3750;
+  --sapphire-color-border-soft: rgba(71, 91, 126, 0.42);
+  --sapphire-color-border-strong: #3b5075;
+  --sapphire-color-primary: #2f6bff;
+  --sapphire-color-primary-hover: #427cff;
+  --sapphire-color-primary-soft: rgba(47, 107, 255, 0.12);
+  --sapphire-color-realtime: #45c8ff;
+  --sapphire-color-success: #21c67a;
+  --sapphire-color-warning: #d6a53a;
+  --sapphire-color-critical: #d04a4a;
+  --sapphire-color-text: #f5f7fb;
+  --sapphire-color-text-secondary: #aab7cc;
+  --sapphire-color-text-muted: #70809d;
+  --sapphire-color-chrome-bright: rgba(224, 235, 252, 0.82);
+  --sapphire-color-chrome-mid: rgba(117, 145, 188, 0.48);
+  --sapphire-color-chrome-dark: rgba(24, 34, 51, 0);
+  --sapphire-color-focus-ring: #75a6ff;
+  --sapphire-gradient-header: linear-gradient(105deg, rgba(47, 107, 255, 0.1), rgba(20, 30, 48, 0.18) 42%, rgba(9, 12, 20, 0) 78%);
+  --sapphire-gradient-focus: radial-gradient(circle at 16% 0%, rgba(55, 113, 231, 0.16), transparent 45%), linear-gradient(180deg, #111a2a, #0d1420);
+  --sapphire-gradient-intelligence: linear-gradient(110deg, rgba(69, 200, 255, 0.08), rgba(47, 107, 255, 0.035) 48%, rgba(214, 165, 58, 0.025));
+
+  --sapphire-font-ui: Geist, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sapphire-font-mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
+  --sapphire-font-size-1: 0.6875rem;
+  --sapphire-font-size-2: 0.75rem;
+  --sapphire-font-size-3: 0.8125rem;
+  --sapphire-font-size-4: 0.875rem;
+  --sapphire-font-size-5: 1rem;
+  --sapphire-font-size-6: 1.125rem;
+  --sapphire-font-size-7: 1.25rem;
+  --sapphire-font-size-8: 1.5rem;
+  --sapphire-font-size-9: 2rem;
+
+  --sapphire-space-0-5: 0.25rem;
+  --sapphire-space-1: 0.5rem;
+  --sapphire-space-1-5: 0.75rem;
+  --sapphire-space-2: 1rem;
+  --sapphire-space-3: 1.5rem;
+  --sapphire-space-4: 2rem;
+  --sapphire-space-5: 2.5rem;
+  --sapphire-space-6: 3rem;
+  --sapphire-space-8: 4rem;
+
+  --sapphire-radius-compact: 0.5rem;
+  --sapphire-radius-control: 0.75rem;
+  --sapphire-radius-card: 1rem;
+  --sapphire-radius-command: 1.25rem;
+  --sapphire-radius-overlay: 1.25rem;
+  --sapphire-radius-round: 999px;
+
+  --sapphire-shadow-card: 0 14px 38px rgba(0, 0, 0, 0.18);
+  --sapphire-shadow-floating: 0 24px 70px rgba(0, 0, 0, 0.58);
+  --sapphire-shadow-overlay: 0 32px 96px rgba(0, 0, 0, 0.66);
+  --sapphire-shadow-focus: 0 0 0 3px rgba(117, 166, 255, 0.24);
+
+  --sapphire-motion-instant: 80ms;
+  --sapphire-motion-feedback: 120ms;
+  --sapphire-motion-compact: 160ms;
+  --sapphire-motion-panel: 220ms;
+  --sapphire-motion-workspace: 300ms;
+  --sapphire-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --sapphire-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --sapphire-z-base: 0;
+  --sapphire-z-sticky: 20;
+  --sapphire-z-navigation: 50;
+  --sapphire-z-toast: 70;
+  --sapphire-z-overlay: 80;
+
+  --sapphire-control-height-compact: 2rem;
+  --sapphire-control-height: 2.5rem;
+  --sapphire-touch-target: 2.75rem;
+  --sapphire-rail-collapsed: 4rem;
+  --sapphire-rail-expanded: 14rem;
+  --sapphire-command-height: 3.75rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --sapphire-motion-instant: 0.01ms;
+    --sapphire-motion-feedback: 0.01ms;
+    --sapphire-motion-compact: 0.01ms;
+    --sapphire-motion-panel: 0.01ms;
+    --sapphire-motion-workspace: 0.01ms;
+  }
+}

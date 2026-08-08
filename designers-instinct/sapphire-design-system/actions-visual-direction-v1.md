@@ -39,6 +39,17 @@ Where an older HOME instruction conflicts with this direction, use the following
 - Chrome and gradients are material treatments only. They never replace semantic status, evidence, freshness or authority labels.
 - All treatments are design-system variants and may not be recreated in page-local CSS.
 
+## Approved HOME-derived exception: tab collections
+
+The Director approved one visual pattern from HOME for system-wide use: enclosed segmented tab/link collections.
+
+- The collection sits inside one dark bordered outer frame.
+- The selected item uses an inset graphite-navy panel with a restrained sapphire/steel outline.
+- Inactive labels remain muted and receive no separate floating pill.
+- Optional counts use compact circular or rounded badges adjacent to the label.
+- The entire collection owns keyboard navigation, focus treatment, responsive overflow and link/button semantics.
+- Actions lenses, HOME view switches and future workspace tab/link collections use this shared component rather than independent button rows.
+
 ## HOME application
 
 HOME keeps its doctrine-defined executive questions and its commercially required regions. It must, however:

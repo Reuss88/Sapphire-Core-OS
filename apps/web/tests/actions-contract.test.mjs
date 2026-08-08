@@ -5,6 +5,7 @@ import test from "node:test";
 const workspace = new URL("../components/actions/actions-workspace.tsx", import.meta.url);
 const fixture = new URL("../components/actions/actions-fixture.ts", import.meta.url);
 const journal = new URL("../components/actions/work-journal.tsx", import.meta.url);
+const shell = new URL("../design-system/shell.tsx", import.meta.url);
 
 test("Actions workspace exposes all canonical lenses and creation commands", async () => {
   const source = await readFile(workspace, "utf8");
@@ -14,10 +15,10 @@ test("Actions workspace exposes all canonical lenses and creation commands", asy
 });
 
 test("execution canvas preserves the Director-approved density and presentation-state contracts", async () => {
-  const source = await readFile(workspace, "utf8");
-  for (const contract of ["BRIEF_ID", "BRIEF_STORAGE_KEY", "NAV_PIN_STORAGE_KEY", "Open full brief", "Dismiss execution brief", "Pin workspace navigation", "Open workspace navigation", "context-canvas", "journal-pane"]) assert.match(source, new RegExp(contract));
+  const [source, shellSource] = await Promise.all([readFile(workspace, "utf8"), readFile(shell, "utf8")]);
+  for (const contract of ["BRIEF_ID", "BRIEF_STORAGE_KEY", "Open full brief", "Dismiss execution brief", "context-canvas", "journal-pane"]) assert.match(source, new RegExp(contract));
+  for (const contract of ["SAPPHIRE_NAV_PIN_STORAGE_KEY", "Pin workspace navigation", "Open workspace navigation", "sessionStorage.setItem"]) assert.match(shellSource, new RegExp(contract));
   assert.match(source, /window\.localStorage\.setItem\(BRIEF_STORAGE_KEY, BRIEF_ID\)/);
-  assert.match(source, /window\.sessionStorage\.setItem\(NAV_PIN_STORAGE_KEY/);
 });
 
 test("Work Journal distinguishes context, execution and evidence with explicit visibility", async () => {

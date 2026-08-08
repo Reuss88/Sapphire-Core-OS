@@ -3,11 +3,11 @@
 import type { ActionLens, ActionSummary, ActionWorkspaceSnapshot, MissionSummary, WorkJournalEntry } from "@sapphire/core-types";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button, Card, DirectorIdentity, Field, Input, SapphireShell, Select, TabCollection, Textarea } from "../../design-system";
 import { WorkJournal } from "./work-journal";
 
 const BRIEF_ID = "actions-brief-2026-08-07-0830-v1";
 const BRIEF_STORAGE_KEY = "sapphire.actions.dismissed-brief.v1";
-const NAV_PIN_STORAGE_KEY = "sapphire.actions.nav-pinned.v1";
 
 const lenses: Array<{ id: ActionLens; label: string; symbol: string }> = [
   { id: "my_actions", label: "My Actions", symbol: "⌁" },
@@ -51,19 +51,14 @@ export function ActionsWorkspace({ initialSnapshot }: { initialSnapshot: ActionW
   const [notice, setNotice] = useState<string | null>(null);
   const [briefDismissed, setBriefDismissed] = useState(false);
   const [briefOpen, setBriefOpen] = useState(false);
-  const [navHovered, setNavHovered] = useState(false);
-  const [navPinned, setNavPinned] = useState(false);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [contextOpen, setContextOpen] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
-  const navCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
       try {
         setBriefDismissed(window.localStorage.getItem(BRIEF_STORAGE_KEY) === BRIEF_ID);
-        setNavPinned(window.sessionStorage.getItem(NAV_PIN_STORAGE_KEY) === "true");
       } catch { /* presentation persistence is optional */ }
     });
     return () => window.cancelAnimationFrame(frame);
@@ -103,7 +98,7 @@ export function ActionsWorkspace({ initialSnapshot }: { initialSnapshot: ActionW
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setDialog(null); setBriefOpen(false); setMobileNavOpen(false); setContextOpen(false); setJournalOpen(false);
+        setDialog(null); setBriefOpen(false); setContextOpen(false); setJournalOpen(false);
         return;
       }
       if (event.metaKey || event.ctrlKey || event.altKey || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
@@ -119,22 +114,6 @@ export function ActionsWorkspace({ initialSnapshot }: { initialSnapshot: ActionW
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [selectedId, visibleActions]);
-
-  function revealNav() {
-    if (navCloseTimer.current) clearTimeout(navCloseTimer.current);
-    setNavHovered(true);
-  }
-
-  function scheduleNavClose() {
-    if (navCloseTimer.current) clearTimeout(navCloseTimer.current);
-    navCloseTimer.current = setTimeout(() => setNavHovered(false), 180);
-  }
-
-  function toggleNavPin() {
-    const next = !navPinned;
-    setNavPinned(next);
-    try { window.sessionStorage.setItem(NAV_PIN_STORAGE_KEY, String(next)); } catch { /* optional */ }
-  }
 
   function dismissBrief() {
     setBriefDismissed(true);
@@ -153,45 +132,31 @@ export function ActionsWorkspace({ initialSnapshot }: { initialSnapshot: ActionW
     setSelectedMissionId(id); setContextOpen(true); setJournalOpen(false);
   }
 
-  const navExpanded = navHovered || navPinned || mobileNavOpen;
+  const shellCommands = <><Button variant="primary" size="compact" className="compact-command" onClick={() => setDialog("action")}>＋ Action</Button><Button variant="secondary" size="compact" className="compact-command" onClick={() => setDialog("mission")}>＋ Mission</Button></>;
+  const shellFooter = <footer className="workspace-footer"><span><kbd>/</kbd> search</span><span><kbd>J</kbd><kbd>K</kbd> navigate</span><span><kbd>N</kbd> action</span><span><kbd>M</kbd> mission</span><span className="freshness">Fixture · 07 Aug 2026 08:30 · authoritative adapter pending</span></footer>;
 
-  return <main className="actions-app">
-    <aside className="brand-rail" aria-label="Sapphire workspaces" data-expanded={navExpanded} data-mobile-open={mobileNavOpen} onMouseEnter={revealNav} onMouseLeave={scheduleNavClose} onFocus={revealNav} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) scheduleNavClose(); }}>
-      <div className="nav-brand-row"><Link className="brand" href="/" aria-label="Sapphire Core OS home"><span className="brand-mark">◇</span><span>SAPPHIRE<small>CORE OS</small></span></Link><button type="button" className="nav-pin" aria-label={navPinned ? "Unpin workspace navigation" : "Pin workspace navigation"} aria-pressed={navPinned} onClick={toggleNavPin}>{navPinned ? "●" : "○"}</button><button type="button" className="nav-mobile-close" aria-label="Close workspace navigation" onClick={() => setMobileNavOpen(false)}>×</button></div>
-      <nav className="workspace-nav" aria-label="Primary workspaces">{["Home", "Actions", "Inbox", "Market Radar", "Demand", "Supply", "Opportunities", "Matching", "Deals", "Network", "Profiles", "Intelligence", "Documents", "Finance", "Governance"].map((item) => <Link key={item} href={item === "Actions" ? "/actions" : `/${item.toLowerCase().replaceAll(" ", "-")}`} className={item === "Actions" ? "active" : ""}><span aria-hidden="true">{item === "Actions" ? "◆" : "◇"}</span><b>{item}</b></Link>)}</nav>
-      <div className="system-state"><span /> <b>All systems operational</b></div>
-    </aside>
-    {mobileNavOpen && <button type="button" className="nav-scrim" aria-label="Close workspace navigation" onClick={() => setMobileNavOpen(false)} />}
+  return <SapphireShell className="actions-app" activeWorkspace="Actions" eyebrow="EXECUTION WORKSPACE" title="Actions" commands={shellCommands} identity={<DirectorIdentity />} footer={shellFooter}>
 
-    <section className="workspace-shell">
-      <header className="command-header">
-        <div className="command-title"><button type="button" className="mobile-menu-button" aria-label="Open workspace navigation" onClick={() => setMobileNavOpen(true)}>☰</button><div><p className="eyebrow">EXECUTION WORKSPACE</p><h1>Actions</h1></div></div>
-        <div className="command-actions"><button className="primary-button compact-command" type="button" onClick={() => setDialog("action")}>＋ Action</button><button className="secondary-button compact-command" type="button" onClick={() => setDialog("mission")}>＋ Mission</button><div className="director-chip"><span>R</span><div><strong>Reuss</strong><small>Director</small></div></div></div>
-      </header>
+      {!briefDismissed && <Card variant="intelligence" chrome="reverse" className="execution-brief" aria-labelledby="brief-title" data-brief-id={BRIEF_ID}><div className="brief-icon" aria-hidden="true">✦</div><div className="brief-copy"><p className="eyebrow">NEW EXECUTION BRIEF · 08:30</p><h2 id="brief-title">Two conditions need Director attention before midday.</h2><p>Pricing authority is holding the copper buyer offer. Supplier KYC is overdue. Three buyer follow-ups remain on course.</p></div><div className="brief-actions"><button type="button" onClick={() => setBriefOpen(true)}>Open full brief</button><button type="button" aria-label="Dismiss execution brief" onClick={dismissBrief}>× Dismiss</button></div></Card>}
 
-      {!briefDismissed && <section className="execution-brief" aria-labelledby="brief-title" data-brief-id={BRIEF_ID}><div className="brief-icon" aria-hidden="true">✦</div><div className="brief-copy"><p className="eyebrow">NEW EXECUTION BRIEF · 08:30</p><h2 id="brief-title">Two conditions need Director attention before midday.</h2><p>Pricing authority is holding the copper buyer offer. Supplier KYC is overdue. Three buyer follow-ups remain on course.</p></div><div className="brief-actions"><button type="button" onClick={() => setBriefOpen(true)}>Open full brief</button><button type="button" aria-label="Dismiss execution brief" onClick={dismissBrief}>× Dismiss</button></div></section>}
+      <section className="lens-strip" aria-label="Actions lenses"><TabCollection compact className="lens-buttons" label="Actions lenses" activeId={lens} items={lenses.map((item) => ({ ...item, count: countFor(item.id, initialSnapshot) }))} onChange={(id) => { setLens(id as ActionLens); setContextOpen(false); setJournalOpen(false); }} /><div className="mission-chips" aria-label="Active missions">{initialSnapshot.missions.map((mission) => <button type="button" key={mission.id} onClick={() => { setLens("missions"); selectMission(mission.id); setQuery(""); }}><span className={`health-dot ${mission.health}`} />{mission.title}<b>{mission.progressPercent}%</b></button>)}</div></section>
 
-      <section className="lens-strip" aria-label="Actions lenses"><div className="lens-buttons">{lenses.map((item) => <button type="button" key={item.id} className={lens === item.id ? "selected" : ""} onClick={() => { setLens(item.id); setContextOpen(false); setJournalOpen(false); }}><span aria-hidden="true">{item.symbol}</span>{item.label}<b>{countFor(item.id, initialSnapshot)}</b></button>)}</div><div className="mission-chips" aria-label="Active missions">{initialSnapshot.missions.map((mission) => <button type="button" key={mission.id} onClick={() => { setLens("missions"); selectMission(mission.id); setQuery(""); }}><span className={`health-dot ${mission.health}`} />{mission.title}<b>{mission.progressPercent}%</b></button>)}</div></section>
-
-      <div className="actions-grid">
+      <Card as="div" variant="queue" chrome="forward" className="actions-grid">
         <section className="queue-pane" aria-labelledby="queue-title">
           <div className="queue-toolbar"><div><p className="eyebrow">RANKED QUEUE</p><h2 id="queue-title">{lenses.find((item) => item.id === lens)?.label}</h2></div><div className="queue-controls"><label className="search-control"><span aria-hidden="true">⌕</span><span className="sr-only">Search current view</span><input ref={searchRef} value={query} onChange={(event) => setQuery(event.target.value)} placeholder={lens === "missions" ? "Search missions…" : "Search actions…"} /></label><label><span className="sr-only">Priority filter</span><select value={priority} onChange={(event) => setPriority(event.target.value)}><option value="all">All priority</option><option value="critical">Critical</option><option value="high">High</option><option value="normal">Normal</option><option value="low">Low</option></select></label><label><span className="sr-only">Sort actions</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="rank">Ranked</option><option value="due">Due date</option></select></label>{lens !== "missions" && <label><span className="sr-only">Group actions</span><select value={group} onChange={(event) => setGroup(event.target.value)}><option value="none">No grouping</option><option value="mission">By mission</option><option value="priority">By priority</option><option value="owner">By owner</option></select></label>}</div></div>
           <div className="queue-summary" aria-live="polite"><span>{lens === "missions" ? `${visibleMissions.length} missions` : `${visibleActions.length} actions`}</span><span>Commercial consequence · due state · authority</span></div>
           <div className="queue-list" role="listbox" aria-label={lens === "missions" ? "Missions" : "Ranked actions"}>{lens === "missions" ? visibleMissions.map((mission) => <MissionRow key={mission.id} mission={mission} selected={selectedMission?.id === mission.id} onSelect={() => selectMission(mission.id)} />) : groupedActions.map(([groupLabel, actions]) => <div className="action-group" role="group" aria-label={groupLabel} key={groupLabel}>{group !== "none" && <h3 className="group-heading">{groupLabel}<span>{actions.length}</span></h3>}{actions.map((action) => <ActionRow key={action.id} action={action} selected={selected?.id === action.id} onSelect={() => selectAction(action.id)} />)}</div>)}{(lens === "missions" ? visibleMissions.length : visibleActions.length) === 0 && <div className="empty-state"><strong>No matching {lens === "missions" ? "missions" : "actions"}.</strong><span>Clear search or filters; this does not imply system-wide absence.</span><button type="button" onClick={() => { setQuery(""); setPriority("all"); }}>Clear filters</button></div>}</div>
         </section>
 
-        <section className={`context-canvas ${contextOpen ? "open" : ""}`} aria-label={lens === "missions" ? "Selected mission context" : "Selected action context"}>{lens === "missions" && selectedMission ? <MissionContext mission={selectedMission} entries={journalEntries} onClose={() => setContextOpen(false)} onOpenJournal={() => { setContextOpen(false); setJournalOpen(true); }} onCommand={guardedCommand} /> : selected ? <ActionContext action={selected} entries={journalEntries} onClose={() => setContextOpen(false)} onOpenJournal={() => { setContextOpen(false); setJournalOpen(true); }} onCommand={guardedCommand} /> : <div className="context-empty">Select an item to open its execution context.</div>}</section>
+        <Card variant="focus" chrome="reverse" className={`context-canvas ${contextOpen ? "open" : ""}`} aria-label={lens === "missions" ? "Selected mission context" : "Selected action context"}>{lens === "missions" && selectedMission ? <MissionContext mission={selectedMission} entries={journalEntries} onClose={() => setContextOpen(false)} onOpenJournal={() => { setContextOpen(false); setJournalOpen(true); }} onCommand={guardedCommand} /> : selected ? <ActionContext action={selected} entries={journalEntries} onClose={() => setContextOpen(false)} onOpenJournal={() => { setContextOpen(false); setJournalOpen(true); }} onCommand={guardedCommand} /> : <div className="context-empty">Select an item to open its execution context.</div>}</Card>
 
-        <aside className={`journal-pane ${journalOpen ? "open" : ""}`} aria-label="Work Journal context"><div className="journal-pane-heading"><div><p className="eyebrow">COLLABORATION & EVIDENCE</p><strong>{journalLabel}</strong></div><button type="button" aria-label="Close Work Journal" onClick={() => setJournalOpen(false)}>×</button></div><WorkJournal entries={journalEntries} subjectLabel={journalLabel} onCommand={guardedCommand} /></aside>
-      </div>
-
-      <footer className="workspace-footer"><span><kbd>/</kbd> search</span><span><kbd>J</kbd><kbd>K</kbd> navigate</span><span><kbd>N</kbd> action</span><span><kbd>M</kbd> mission</span><span className="freshness">Fixture · 07 Aug 2026 08:30 · authoritative adapter pending</span></footer>
-    </section>
+        <Card as="aside" variant="timeline" chrome="forward" className={`journal-pane ${journalOpen ? "open" : ""}`} aria-label="Work Journal context"><div className="journal-pane-heading"><div><p className="eyebrow">COLLABORATION & EVIDENCE</p><strong>{journalLabel}</strong></div><button type="button" aria-label="Close Work Journal" onClick={() => setJournalOpen(false)}>×</button></div><WorkJournal entries={journalEntries} subjectLabel={journalLabel} onCommand={guardedCommand} /></Card>
+      </Card>
 
     {notice && <div className="toast" role="status"><span>i</span>{notice}<button type="button" aria-label="Dismiss notification" onClick={() => setNotice(null)}>×</button></div>}
     {briefOpen && <BriefDialog onClose={() => setBriefOpen(false)} />}
     {dialog && <CreationDialog kind={dialog} onClose={() => setDialog(null)} onValidated={() => { setDialog(null); setNotice(`Create ${dialog} preview validated. Backend RPC connection is required before it becomes execution truth.`); }} />}
-  </main>;
+  </SapphireShell>;
 }
 
 function ActionRow({ action, selected, onSelect }: { action: ActionSummary; selected: boolean; onSelect: () => void }) {
@@ -216,9 +181,9 @@ function MissionContext({ mission, entries, onClose, onOpenJournal, onCommand }:
 }
 
 function BriefDialog({ onClose }: { onClose: () => void }) {
-  return <div className="dialog-backdrop" role="presentation" onMouseDown={onClose}><section className="dialog brief-dialog" role="dialog" aria-modal="true" aria-labelledby="full-brief-title" onMouseDown={(event) => event.stopPropagation()}><div className="dialog-heading"><div><p className="eyebrow">SAPPHIRE EXECUTION BRIEF · 08:30</p><h2 id="full-brief-title">Director briefing</h2></div><button type="button" aria-label="Close full execution brief" onClick={onClose}>×</button></div><div className="full-brief-content"><article><strong>Pricing authority</strong><p>The copper buyer offer remains held until the protected pricing range is approved in Governance.</p></article><article><strong>Supplier verification</strong><p>Beneficial-owner evidence is overdue and prevents the Zambian supplier entering verified matching.</p></article><article><strong>Buyer movement</strong><p>Three qualified buyer follow-ups remain due today. Sofia Marin requires assay evidence and an indicative range.</p></article></div><div className="brief-dialog-actions"><button type="button" className="secondary-button" onClick={onClose}>Return to Actions</button></div></section></div>;
+  return <div className="dialog-backdrop" role="presentation" onMouseDown={onClose}><Card variant="intelligence" chrome="reverse" className="dialog brief-dialog" role="dialog" aria-modal="true" aria-labelledby="full-brief-title" onMouseDown={(event) => event.stopPropagation()}><div className="dialog-heading"><div><p className="eyebrow">SAPPHIRE EXECUTION BRIEF · 08:30</p><h2 id="full-brief-title">Director briefing</h2></div><button type="button" aria-label="Close full execution brief" onClick={onClose}>×</button></div><div className="full-brief-content"><article><strong>Pricing authority</strong><p>The copper buyer offer remains held until the protected pricing range is approved in Governance.</p></article><article><strong>Supplier verification</strong><p>Beneficial-owner evidence is overdue and prevents the Zambian supplier entering verified matching.</p></article><article><strong>Buyer movement</strong><p>Three qualified buyer follow-ups remain due today. Sofia Marin requires assay evidence and an indicative range.</p></article></div><div className="brief-dialog-actions"><Button variant="secondary" onClick={onClose}>Return to Actions</Button></div></Card></div>;
 }
 
 function CreationDialog({ kind, onClose, onValidated }: { kind: "action" | "mission"; onClose: () => void; onValidated: () => void }) {
-  return <div className="dialog-backdrop" role="presentation" onMouseDown={onClose}><section className="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" onMouseDown={(event) => event.stopPropagation()}><div className="dialog-heading"><div><p className="eyebrow">STRUCTURED CREATION</p><h2 id="dialog-title">Create {kind}</h2></div><button type="button" aria-label="Close dialog" onClick={onClose}>×</button></div><p>Review the accountable outcome, owner and context before an authoritative RPC commits work.</p><form onSubmit={(event) => { event.preventDefault(); onValidated(); }}><label>Required outcome<input autoFocus required name="title" placeholder={kind === "action" ? "What must happen?" : "What commercial outcome must be achieved?"} /></label><div className="form-row"><label>Owner<select name="owner"><option>Reuss · Director</option><option>Maya Chen · Closer</option><option>Idris Cole · Research</option></select></label><label>Priority<select name="priority"><option>Normal</option><option>High</option><option>Critical</option><option>Low</option></select></label></div><label>Mission or governed context<select name="context"><option>Secure copper cathode mandate</option><option>Verify gold supplier network</option><option>Complete transaction banking readiness</option><option>Independent action</option></select></label><label>Success or completion evidence<textarea name="evidence" rows={3} placeholder="What will prove the outcome?" /></label><div className="dialog-actions"><button type="button" className="secondary-button" onClick={onClose}>Cancel</button><button type="submit" className="primary-button">Validate preview</button></div></form></section></div>;
+  return <div className="dialog-backdrop" role="presentation" onMouseDown={onClose}><Card variant="form" chrome="forward" className="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" onMouseDown={(event) => event.stopPropagation()}><div className="dialog-heading"><div><p className="eyebrow">STRUCTURED CREATION</p><h2 id="dialog-title">Create {kind}</h2></div><button type="button" aria-label="Close dialog" onClick={onClose}>×</button></div><p>Review the accountable outcome, owner and context before an authoritative RPC commits work.</p><form onSubmit={(event) => { event.preventDefault(); onValidated(); }}><Field label="Required outcome" required><Input autoFocus required name="title" placeholder={kind === "action" ? "What must happen?" : "What commercial outcome must be achieved?"} /></Field><div className="form-row"><Field label="Owner"><Select name="owner"><option>Reuss · Director</option><option>Maya Chen · Closer</option><option>Idris Cole · Research</option></Select></Field><Field label="Priority"><Select name="priority"><option>Normal</option><option>High</option><option>Critical</option><option>Low</option></Select></Field></div><Field label="Mission or governed context"><Select name="context"><option>Secure copper cathode mandate</option><option>Verify gold supplier network</option><option>Complete transaction banking readiness</option><option>Independent action</option></Select></Field><Field label="Success or completion evidence"><Textarea name="evidence" rows={3} placeholder="What will prove the outcome?" /></Field><div className="dialog-actions"><Button variant="secondary" onClick={onClose}>Cancel</Button><Button type="submit" variant="primary">Validate preview</Button></div></form></Card></div>;
 }

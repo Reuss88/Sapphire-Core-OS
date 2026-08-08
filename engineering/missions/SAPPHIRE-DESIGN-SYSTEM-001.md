@@ -67,7 +67,7 @@ The runtime CSS token layer is canonical. Components consume only semantic varia
 
 ### Navigation and commands
 
-- `TabCollection` / lens tabs
+- `TabCollection` / lens tabs using the Director-approved enclosed HOME segmented treatment: one outer frame, inset selected panel, muted inactive labels and optional count badges
 - compact filter tabs and status tabs
 - `Button`, `IconButton`, `ButtonGroup`
 - command strip and overflow menu
