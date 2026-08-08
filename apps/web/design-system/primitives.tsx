@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, ElementType, HTMLAttributes, InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { forwardRef } from "react";
+import Link from "next/link";
 import type { SapphireCardVariant } from "./tokens";
 
 function cx(...values: Array<string | false | null | undefined>) {
@@ -14,6 +15,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({ variant = "secondary", size = "standard", className, type = "button", ...props }, ref) {
   return <button ref={ref} type={type} className={cx("s-button", `s-button--${variant}`, `s-button--${size}`, className)} {...props} />;
 });
+
+export function LinkButton({ href, children, variant = "secondary", size = "standard", className, ...props }: { href: string; children: ReactNode; variant?: ButtonProps["variant"]; size?: ButtonProps["size"]; className?: string } & Omit<HTMLAttributes<HTMLAnchorElement>, "href">) {
+  return <Link href={href} className={cx("s-button", `s-button--${variant}`, `s-button--${size}`, className)} {...props}>{children}</Link>;
+}
 
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;

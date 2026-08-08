@@ -22,11 +22,12 @@ The Director-approved wide desktop concept supplied on 6 August 2026 remains the
 Reference identity:
 
 - source filename: `Generated image 2.png`
+- canonical repository asset: `reference/home-approved-v1.png`
 - source dimensions: `1672 × 940`
 - aspect ratio: approximately `1.779:1`
 - intended production class: desktop-first, 16:9 command-deck viewport
 
-Codex must not combine this reference with earlier concepts. It must implement the reference through the Actions-derived live design system rather than reproducing conflicting page-local styling.
+The older `reference/home-approved-v1.webp` derivative is retained only for repository history; it is dimensionally reduced and visually corrupted and must not be used for parity inspection. Codex must not combine the canonical PNG with earlier concepts. It must implement the reference through the Actions-derived live design system rather than reproducing conflicting page-local styling.
 
 The implementation must preserve the approved composition, hierarchy, density, restraint and commercial emphasis while replacing illustrative or invented content with real components, typed fixtures and later Supabase-backed data.
 

@@ -1,5 +1,6 @@
 @import "../design-system/tokens.css";
 @import "../design-system/components.css";
+@import "../components/home/home-dashboard.css";
 
 :root {
   --sapphire-motion-fast: var(--sapphire-motion-feedback);

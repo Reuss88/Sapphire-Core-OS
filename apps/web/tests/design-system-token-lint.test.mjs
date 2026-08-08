@@ -5,6 +5,7 @@ import test from "node:test";
 const governedStyles = [
   new URL("../design-system/components.css", import.meta.url),
   new URL("../app/globals.css", import.meta.url),
+  new URL("../components/home/home-dashboard.css", import.meta.url),
 ];
 
 test("shared component styles consume semantic tokens instead of raw colours", async () => {
