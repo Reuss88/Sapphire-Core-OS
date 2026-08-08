@@ -22,6 +22,18 @@
   --sapphire-color-chrome-mid: rgba(117, 145, 188, 0.48);
   --sapphire-color-chrome-dark: rgba(24, 34, 51, 0);
   --sapphire-color-focus-ring: #75a6ff;
+  --sapphire-color-on-critical: #ffd9d9;
+  --sapphire-color-critical-text: #ef8888;
+  --sapphire-color-info-text: #9fc0ff;
+  --sapphire-color-success-text: #70dda9;
+  --sapphire-color-warning-text: #e3bd67;
+  --sapphire-color-ai-text: #8addff;
+  --sapphire-color-tab-active: #18243a;
+  --sapphire-color-tab-border: #355386;
+  --sapphire-color-tab-symbol: #8cb0f5;
+  --sapphire-color-tab-count: #8fb7ff;
+  --sapphire-color-tab-count-bg: #10224a;
+  --sapphire-color-scrim: rgba(2, 5, 10, 0.76);
   --sapphire-gradient-header: linear-gradient(105deg, rgba(47, 107, 255, 0.1), rgba(20, 30, 48, 0.18) 42%, rgba(9, 12, 20, 0) 78%);
   --sapphire-gradient-focus: radial-gradient(circle at 16% 0%, rgba(55, 113, 231, 0.16), transparent 45%), linear-gradient(180deg, #111a2a, #0d1420);
   --sapphire-gradient-intelligence: linear-gradient(110deg, rgba(69, 200, 255, 0.08), rgba(47, 107, 255, 0.035) 48%, rgba(214, 165, 58, 0.025));
@@ -80,6 +92,12 @@
   --sapphire-rail-collapsed: 4rem;
   --sapphire-rail-expanded: 14rem;
   --sapphire-command-height: 3.75rem;
+  --sapphire-breakpoint-mobile: 700px;
+  --sapphire-breakpoint-tablet: 980px;
+  --sapphire-safe-top: env(safe-area-inset-top, 0px);
+  --sapphire-safe-right: env(safe-area-inset-right, 0px);
+  --sapphire-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --sapphire-safe-left: env(safe-area-inset-left, 0px);
 }
 @media (prefers-reduced-motion: reduce) {
   :root {

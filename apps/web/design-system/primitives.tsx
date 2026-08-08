@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ElementType, HTMLAttributes, InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { forwardRef } from "react";
 import type { SapphireCardVariant } from "./tokens";
 
 function cx(...values: Array<string | false | null | undefined>) {
@@ -10,9 +11,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "compact" | "standard";
 }
 
-export function Button({ variant = "secondary", size = "standard", className, type = "button", ...props }: ButtonProps) {
-  return <button type={type} className={cx("s-button", `s-button--${variant}`, `s-button--${size}`, className)} {...props} />;
-}
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({ variant = "secondary", size = "standard", className, type = "button", ...props }, ref) {
+  return <button ref={ref} type={type} className={cx("s-button", `s-button--${variant}`, `s-button--${size}`, className)} {...props} />;
+});
 
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
@@ -54,17 +55,19 @@ export interface FieldProps {
   label: string;
   hint?: string;
   error?: string;
+  authorityNote?: string;
   required?: boolean;
+  optional?: boolean;
   children: ReactNode;
 }
 
-export function Field({ label, hint, error, required, children }: FieldProps) {
-  return <label className="s-field"><span className="s-field__label">{label}{required && <b aria-hidden="true"> *</b>}</span>{children}{error ? <span className="s-field__error">{error}</span> : hint ? <span className="s-field__hint">{hint}</span> : null}</label>;
+export function Field({ label, hint, error, authorityNote, required, optional, children }: FieldProps) {
+  return <label className="s-field"><span className="s-field__label">{label}{required && <b aria-hidden="true"> *</b>}{optional && <small>Optional</small>}</span>{children}{error ? <span className="s-field__error">{error}</span> : hint ? <span className="s-field__hint">{hint}</span> : null}{authorityNote && <span className="s-field__authority">◇ {authorityNote}</span>}</label>;
 }
 
-export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  return <input className={cx("s-input", className)} {...props} />;
-}
+export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input({ className, ...props }, ref) {
+  return <input ref={ref} className={cx("s-input", className)} {...props} />;
+});
 
 export function Select({ className, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
   return <select className={cx("s-select", className)} {...props} />;
@@ -72,6 +75,18 @@ export function Select({ className, ...props }: SelectHTMLAttributes<HTMLSelectE
 
 export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea className={cx("s-textarea", className)} {...props} />;
+}
+
+export function ButtonGroup({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+  return <div className={cx("s-button-group", className)} role="group" {...props} />;
+}
+
+export function Avatar({ initials, label, className }: { initials: string; label: string; className?: string }) {
+  return <span className={cx("s-avatar", className)} role="img" aria-label={label}>{initials}</span>;
+}
+
+export function ProvenanceMarker({ children, className }: { children: ReactNode; className?: string }) {
+  return <span className={cx("s-provenance", className)}>✦ {children}</span>;
 }
 
 export function SharedState({ state, title, detail, action }: { state: "loading" | "empty" | "stale" | "partial" | "offline" | "error" | "unauthorised"; title: string; detail: string; action?: ReactNode }) {

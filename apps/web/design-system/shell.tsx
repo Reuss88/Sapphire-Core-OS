@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { FocusEvent, MouseEventHandler, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import { IconButton } from "./primitives";
+import { IconButton, Input } from "./primitives";
 
 export const SAPPHIRE_NAV_PIN_STORAGE_KEY = "sapphire.shell.nav-pinned.v1";
 
@@ -41,6 +41,39 @@ export interface SapphireShellProps {
   children: ReactNode;
 }
 
+export function NavigationPanel({ activeWorkspace, onNavigate }: { activeWorkspace: string; onNavigate?: () => void }) {
+  return <nav className="workspace-nav" aria-label="Primary workspaces">{workspaceNavigation.map((item) => <Link key={item.label} href={item.href} onClick={onNavigate} className={item.label === activeWorkspace ? "active" : ""} aria-current={item.label === activeWorkspace ? "page" : undefined}><span aria-hidden="true">{item.symbol}</span><b>{item.label}</b></Link>)}</nav>;
+}
+
+export interface WorkspaceRailProps {
+  activeWorkspace: string;
+  expanded: boolean;
+  mobileOpen: boolean;
+  pinned: boolean;
+  onPin: () => void;
+  onMobileClose: () => void;
+  onMouseEnter: MouseEventHandler<HTMLElement>;
+  onMouseLeave: MouseEventHandler<HTMLElement>;
+  onFocus: () => void;
+  onBlur: (event: FocusEvent<HTMLElement>) => void;
+}
+
+export function WorkspaceRail({ activeWorkspace, expanded, mobileOpen, pinned, onPin, onMobileClose, ...events }: WorkspaceRailProps) {
+  return <aside className="brand-rail" aria-label="Sapphire workspaces" data-expanded={expanded} data-mobile-open={mobileOpen} {...events}><div className="nav-brand-row"><Link className="brand" href="/dashboard" aria-label="Sapphire Core OS home"><span className="brand-mark">◇</span><span>SAPPHIRE<small>CORE OS</small></span></Link><IconButton className="nav-pin" label={pinned ? "Unpin workspace navigation" : "Pin workspace navigation"} aria-pressed={pinned} onClick={onPin}>{pinned ? "●" : "○"}</IconButton><IconButton className="nav-mobile-close" label="Close workspace navigation" onClick={onMobileClose}>×</IconButton></div><NavigationPanel activeWorkspace={activeWorkspace} onNavigate={onMobileClose} /><div className="system-state"><span /> <b>All systems operational</b></div></aside>;
+}
+
+export function CommandHeader({ eyebrow, title, commands, identity, onMenuOpen }: { eyebrow: string; title: string; commands?: ReactNode; identity?: ReactNode; onMenuOpen: () => void }) {
+  return <header className="command-header"><div className="command-title"><IconButton className="mobile-menu-button" label="Open workspace navigation" onClick={onMenuOpen}>☰</IconButton><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1></div></div><div className="command-actions">{commands}{identity}</div></header>;
+}
+
+export function GlobalSearch({ label = "Search Sapphire Core OS", placeholder = "Search workspaces, records and people…" }: { label?: string; placeholder?: string }) {
+  return <label className="s-global-search"><span aria-hidden="true">⌕</span><span className="s-visually-hidden">{label}</span><Input type="search" placeholder={placeholder} /></label>;
+}
+
+export function WorkspaceFooter({ children }: { children: ReactNode }) {
+  return <footer className="workspace-footer">{children}</footer>;
+}
+
 export function SapphireShell({ activeWorkspace, eyebrow, title, commands, identity, footer, className = "", children }: SapphireShellProps) {
   const [navHovered, setNavHovered] = useState(false);
   const [navPinned, setNavPinned] = useState(false);
@@ -73,18 +106,11 @@ export function SapphireShell({ activeWorkspace, eyebrow, title, commands, ident
   const navExpanded = navHovered || navPinned || mobileNavOpen;
 
   return <main className={`sapphire-app ${className}`}>
-    <aside className="brand-rail" aria-label="Sapphire workspaces" data-expanded={navExpanded} data-mobile-open={mobileNavOpen} onMouseEnter={revealNav} onMouseLeave={scheduleNavClose} onFocus={revealNav} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) scheduleNavClose(); }}>
-      <div className="nav-brand-row"><Link className="brand" href="/dashboard" aria-label="Sapphire Core OS home"><span className="brand-mark">◇</span><span>SAPPHIRE<small>CORE OS</small></span></Link><IconButton className="nav-pin" label={navPinned ? "Unpin workspace navigation" : "Pin workspace navigation"} aria-pressed={navPinned} onClick={toggleNavPin}>{navPinned ? "●" : "○"}</IconButton><IconButton className="nav-mobile-close" label="Close workspace navigation" onClick={() => setMobileNavOpen(false)}>×</IconButton></div>
-      <nav className="workspace-nav" aria-label="Primary workspaces">{workspaceNavigation.map((item) => <Link key={item.label} href={item.href} className={item.label === activeWorkspace ? "active" : ""} aria-current={item.label === activeWorkspace ? "page" : undefined}><span aria-hidden="true">{item.symbol}</span><b>{item.label}</b></Link>)}</nav>
-      <div className="system-state"><span /> <b>All systems operational</b></div>
-    </aside>
+    <WorkspaceRail activeWorkspace={activeWorkspace} expanded={navExpanded} mobileOpen={mobileNavOpen} pinned={navPinned} onPin={toggleNavPin} onMobileClose={() => setMobileNavOpen(false)} onMouseEnter={revealNav} onMouseLeave={scheduleNavClose} onFocus={revealNav} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) scheduleNavClose(); }} />
     {mobileNavOpen && <button type="button" className="nav-scrim" aria-label="Close workspace navigation" onClick={() => setMobileNavOpen(false)} />}
 
     <section className="workspace-shell">
-      <header className="command-header">
-        <div className="command-title"><IconButton className="mobile-menu-button" label="Open workspace navigation" onClick={() => setMobileNavOpen(true)}>☰</IconButton><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1></div></div>
-        <div className="command-actions">{commands}{identity}</div>
-      </header>
+      <CommandHeader eyebrow={eyebrow} title={title} commands={commands} identity={identity} onMenuOpen={() => setMobileNavOpen(true)} />
       {children}
       {footer}
     </section>
