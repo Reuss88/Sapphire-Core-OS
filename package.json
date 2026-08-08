@@ -6,7 +6,7 @@
     "build": "pnpm --filter @sapphire/web build",
     "dev": "pnpm --filter @sapphire/web dev",
     "lint": "pnpm --filter @sapphire/web lint",
-    "test": "pnpm --filter @sapphire/web test && node scripts/validate-actions-contract.mjs && node scripts/validate-activity-contract.mjs",
+    "test": "pnpm --filter @sapphire/web test && node scripts/validate-actions-contract.mjs && node scripts/validate-activity-contract.mjs && node scripts/validate-actions-execution-canvas.mjs",
     "typecheck": "pnpm --filter @sapphire/web typecheck"
   }
 }

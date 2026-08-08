@@ -8,9 +8,16 @@ const journal = new URL("../components/actions/work-journal.tsx", import.meta.ur
 
 test("Actions workspace exposes all canonical lenses and creation commands", async () => {
   const source = await readFile(workspace, "utf8");
-  for (const label of ["My Actions", "Missions", "Team", "Approvals & Decisions", "Waiting On", "Overdue", "Completed", "Create mission", "Create action"]) {
+  for (const label of ["My Actions", "Missions", "Team", "Approvals & Decisions", "Waiting On", "Overdue", "Completed", "＋ Mission", "＋ Action"]) {
     assert.match(source, new RegExp(label.replace(/[&]/g, "\\&")));
   }
+});
+
+test("execution canvas preserves the Director-approved density and presentation-state contracts", async () => {
+  const source = await readFile(workspace, "utf8");
+  for (const contract of ["BRIEF_ID", "BRIEF_STORAGE_KEY", "NAV_PIN_STORAGE_KEY", "Open full brief", "Dismiss execution brief", "Pin workspace navigation", "Open workspace navigation", "context-canvas", "journal-pane"]) assert.match(source, new RegExp(contract));
+  assert.match(source, /window\.localStorage\.setItem\(BRIEF_STORAGE_KEY, BRIEF_ID\)/);
+  assert.match(source, /window\.sessionStorage\.setItem\(NAV_PIN_STORAGE_KEY/);
 });
 
 test("Work Journal distinguishes context, execution and evidence with explicit visibility", async () => {
