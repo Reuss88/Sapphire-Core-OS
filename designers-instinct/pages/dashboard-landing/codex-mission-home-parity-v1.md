@@ -18,7 +18,7 @@ This is a production implementation mission.
 
 ## Canonical visual authority
 
-The Director-approved reference is the wide desktop HOME image confirmed in the design review immediately before this mission.
+The Director-approved reference is the wide desktop HOME image confirmed in the design review immediately before this mission, governed by the later Actions visual direction for shell, density, materials and shared components.
 
 Codex must treat that exact composition as the visual authority.
 
@@ -39,7 +39,7 @@ The approved composition is characterised by:
 - no tablet composition;
 - no generic colourful SaaS styling.
 
-If the build differs materially from this approved composition, the build is wrong.
+If the build differs materially from the approved commercial hierarchy or composition, the build is wrong. If it reproduces older shell or styling that conflicts with the Actions-derived design system, the build is also wrong.
 
 ## Mission objective
 
@@ -146,14 +146,14 @@ If exact content causes overflow, preserve hierarchy and use controlled internal
 
 ## Desktop application shell
 
-### Left navigation rail
+### Workspace navigation rail
 
-Permanent on desktop.
+Use the Actions-derived shared navigation component.
 
-Approximate width:
-
-- `220px–240px` at the reference viewport;
-- must not dominate the canvas.
+- collapsed to approximately `64px` by default on desktop;
+- reveals to approximately `224px` as an overlay on pointer intent or keyboard focus;
+- never pushes or resizes the HOME canvas;
+- uses an explicit drawer on touch layouts.
 
 Navigation order:
 

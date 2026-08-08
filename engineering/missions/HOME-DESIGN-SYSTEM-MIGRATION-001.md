@@ -14,7 +14,7 @@ Implement the locked HOME command deck inside the routed web app using only the 
 
 ## Authority and approved evolution
 
-The HOME reference `designers-instinct/pages/dashboard-landing/reference/home-approved-v1.webp` remains authority for widget order, information hierarchy and desktop composition. The Director's later instruction authorises the shell and material language to evolve to match Actions: overlay navigation, denser controls, shared typography, chrome-corner bezels and restrained header/focus gradients. This evolution does not authorise widget reordering or generic redesign.
+`designers-instinct/sapphire-design-system/actions-visual-direction-v1.md` is the visual authority. The HOME reference remains a guide to commercial content, executive questions and broad composition, but is subordinate wherever it conflicts with Actions. HOME must use Actions-derived overlay navigation, density, controls, typography, chrome-corner bezels and restrained header/focus gradients. Page-specific composition may adapt where required to achieve one coherent OS, provided HOME's commercial questions remain answered.
 
 ## Read first
 
@@ -53,7 +53,7 @@ Read the Engineering Framework, the programme plan, all HOME doctrine and parity
 
 1. HOME uses the shared design system for every covered component family.
 2. HOME and Actions visibly belong to the same OS.
-3. Widget hierarchy and proportions match the approved HOME reference within documented tolerance.
+3. HOME answers every doctrine-required commercial question while its shell, material, density and components match Actions.
 4. Reference viewport has no page-level vertical scroll.
 5. All actions link to a meaningful same-app route or disclose typed-fixture limitations.
 6. Loading, empty, stale, partial, offline, error and unauthorised states are demonstrable.

@@ -17,7 +17,7 @@ It does not replace them.
 
 ## Canonical reference
 
-The Director-approved wide desktop concept supplied on 6 August 2026 is the single visual authority for the first HOME build.
+The Director-approved wide desktop concept supplied on 6 August 2026 remains the authority for HOME commercial content, widget order and broad composition. The later Director-approved `../../sapphire-design-system/actions-visual-direction-v1.md` is the authority for shell, density, material, shared components and interaction language.
 
 Reference identity:
 
@@ -26,7 +26,7 @@ Reference identity:
 - aspect ratio: approximately `1.779:1`
 - intended production class: desktop-first, 16:9 command-deck viewport
 
-Codex must not combine this reference with earlier concepts. Earlier generated designs are non-authoritative.
+Codex must not combine this reference with earlier concepts. It must implement the reference through the Actions-derived live design system rather than reproducing conflicting page-local styling.
 
 The implementation must preserve the approved composition, hierarchy, density, restraint and commercial emphasis while replacing illustrative or invented content with real components, typed fixtures and later Supabase-backed data.
 
@@ -68,19 +68,16 @@ At narrower desktop widths, controlled density reduction is permitted. The page 
 
 ## Shell geometry
 
-### Sidebar
+### Workspace navigation
 
-- fixed left rail;
-- target width: `224px` at 1920px viewport;
-- acceptable range: `216px–232px`;
-- full viewport height;
-- background darker than the main canvas;
-- subtle right divider;
-- logo at top;
-- primary navigation in the middle;
-- Director Mode and system health anchored toward the bottom.
+- fixed thin rail, collapsed to approximately `64px` by default;
+- full navigation reveals to approximately `224px` on pointer intent or keyboard focus;
+- expanded navigation overlays the canvas and never changes content geometry;
+- full viewport height with a darker background and subtle right divider;
+- logo at top, primary navigation in the middle and system state toward the bottom;
+- explicit mobile menu and drawer; no hover dependency on touch devices.
 
-The sidebar must feel narrow, disciplined and terminal-like. It must not resemble a wide consumer-app menu.
+The navigation follows Actions and must feel narrow, disciplined and terminal-like.
 
 ### Main canvas
 

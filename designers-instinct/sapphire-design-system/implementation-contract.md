@@ -18,6 +18,8 @@ Required namespaces:
 ## Component architecture
 Build accessible primitives, then Sapphire variants. shadcn/ui or Radix primitives may support behaviour but must be visually and semantically transformed into Sapphire components. Do not ship an obvious default component library skin.
 
+The approved Actions execution canvas is the extraction baseline. HOME and later workspaces import the same live shell, navigation, command header, tab collection, button, card, form, calendar, overlay and shared-state components. Page-local copies of shared component structure or visual CSS are non-compliant.
+
 ## Rendering
 Prefer Server Components for stable read surfaces and Client Components only for interaction, realtime and local state. Avoid moving business logic into presentation components.
 

@@ -17,7 +17,7 @@ Typography must feel editorial and institutional. Avoid oversized marketing head
 ## Layout
 Desktop uses a 12-column grid with a content maximum near 1600px. Tablet may use 8 columns. Mobile uses 4 columns and prioritises actions, inbox, urgent signals and primary value.
 
-Persistent navigation must remain stable. Page regions should follow commercial priority, not equal-card symmetry. Avoid mosaic layouts where every panel competes equally.
+Desktop navigation uses the stable Actions-derived rail: collapsed by default, fully revealed over the workspace on pointer intent or keyboard focus, and never pushing page content. Touch layouts use an explicit drawer. Page regions should follow commercial priority, not equal-card symmetry. Avoid mosaic layouts where every panel competes equally.
 
 ## Responsive doctrine
 Responsive design is not shrinkage. Lower-width surfaces must re-rank content, collapse secondary context and retain the same authority, freshness and evidence meaning.

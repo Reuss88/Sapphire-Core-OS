@@ -3,6 +3,8 @@
 ## Status
 Authoritative cross-product design doctrine for Sapphire Core OS.
 
+The current Director-approved product direction is defined by `actions-visual-direction-v1.md`. The approved Actions execution canvas is the visual and interaction baseline for HOME and future workspaces.
+
 ## Design intent
 Sapphire must feel like a private commercial command environment for high-value brokerage, finance and asset acquisition. The emotional objective is **Quiet Power**: opulent, controlled, precise, institutional and intelligent.
 
@@ -28,6 +30,7 @@ Glassmorphism is prohibited as a dominant material. Gradients, bloom and luminou
 - `commercial-semantics.md`
 - `component-standards.md`
 - `implementation-contract.md`
+- `actions-visual-direction-v1.md`
 
 ## Governance
 Pages may extend these tokens through semantic page tokens, but may not redefine core commercial meaning. Any new token or pattern must solve a repeatable need, pass accessibility review and preserve Quiet Power.

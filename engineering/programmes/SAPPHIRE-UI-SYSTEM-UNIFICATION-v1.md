@@ -11,7 +11,7 @@ Remove visual drift and disconnected runtimes by establishing one live Sapphire 
 ## Director direction incorporated
 
 - Actions is the current quality baseline for density, restraint and execution-first layout.
-- HOME must retain its locked commercial hierarchy while adopting the Actions shell and visual discipline.
+- Actions is the governing design-system extraction source. HOME retains its commercial purpose and required information, but older HOME visual instructions are subordinate wherever they conflict with Actions.
 - The Severovsky design-system/style-guide approach is the organisational foundation: systematic foundations, reusable variants, documented components and controlled composition rather than page-specific styling.
 - Sapphire doctrine remains the visual and semantic authority. External reference material cannot override Quiet Power, commercial meaning, accessibility or authority boundaries.
 - The system must include live cards, card types, navigation, tab collections, buttons, headers, fields, forms, calendar/date controls, overlays and shared states.
@@ -55,7 +55,7 @@ Pages may supply semantic variants and layout composition. They may not restyle 
 | One visual source of truth | versioned CSS tokens plus typed token exports and shared React components |
 | Safe global patches | Actions and HOME import the same primitives; no duplicated shell/card/button/tab/form CSS |
 | Actions remains approved | desktop/tablet/mobile visual regression against the execution-canvas baseline |
-| HOME matches Actions | common shell, density, typography, material and interactions while locked HOME widget order remains intact |
+| HOME follows Sapphire direction | common Actions-derived shell, density, typography, material, components and interactions while HOME's commercial questions remain intact |
 | One OS | one install, one server, one origin, `/dashboard` and `/actions` routes, working navigation |
 | Full component control | catalogue covers foundations, variants, states, forms, calendar, cards, navigation and overlays |
 | Doctrine compliance | commercial semantics, authority and provenance remain visible and unchanged |

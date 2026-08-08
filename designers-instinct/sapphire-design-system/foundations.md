@@ -3,6 +3,8 @@
 ## Experience principle
 Every surface must communicate control before decoration. The Director should feel that high-value commercial conditions are visible, traceable and actionable.
 
+The approved Actions execution canvas is the current cross-workspace baseline for density, shell geometry, working-surface hierarchy and interaction restraint.
+
 ## Visual hierarchy
 Maximum three emphasis levels per screen:
 1. Primary commercial condition or decision.
@@ -39,6 +41,10 @@ Sapphire targets Bloomberg-level usefulness with Apple-level restraint. Dense in
 - fine steel-blue separators
 - limited sapphire illumination
 - minimal transparency
+- subtle polished-chrome highlights on opposing card corners
+- restrained low-contrast gradients behind headers and focused working regions
+
+Chrome and gradients communicate premium material and focus only. They may not carry commercial status or compete with critical information.
 
 ## Accessibility
 - WCAG 2.2 AA minimum
