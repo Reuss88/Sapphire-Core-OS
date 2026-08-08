@@ -2,7 +2,7 @@
 
 ## Status
 
-Director-approved programme plan.
+COMPLETE — all three missions passed, were committed independently and were pushed to GitHub.
 
 ## Goal
 
@@ -26,6 +26,18 @@ Remove visual drift and disconnected runtimes by establishing one live Sapphire 
 3. `OS-APP-UNIFICATION-001` — one Next.js runtime, shared shell and connected navigation.
 
 The order is binding. HOME may not establish a competing component language, and runtime unification may not copy either page into a second application.
+
+## Completion ledger
+
+| Mission | Result | Commit |
+| --- | --- | --- |
+| `SAPPHIRE-DESIGN-SYSTEM-001` | PASS | `cbbe5b9dde80fa910db5d41418842d4ae5acf3f6` (foundation began in `29f122b082c4f325a15f7f35c98253afd509faea`) |
+| `HOME-DESIGN-SYSTEM-MIGRATION-001` | PASS | `62529eff20d9a531bce4141124008347037b86c4` |
+| `OS-APP-UNIFICATION-001` | PASS | `4615be041ff5541609ac7e351eebc7af83dd5e25` |
+
+- Delivery branch: `agent/sapphire-design-system-home-unification-001`
+- Remote: `origin` / `Reuss88/Sapphire-Core-OS`
+- Single verified production runtime: `http://localhost:3014`
 
 ## Design-system ownership model
 

@@ -5,8 +5,8 @@
 - Local URL: `http://localhost:3012/design-system`
 - Actions regression URL: `http://localhost:3012/actions`
 - Branch: `agent/sapphire-design-system-home-unification-001`
-- Commit SHA: recorded in the programme handoff after this review package is committed
-- Branch pushed successfully: recorded after commit and remote verification
+- Commit SHA: `cbbe5b9dde80fa910db5d41418842d4ae5acf3f6`
+- Branch pushed successfully: YES; remote branch SHA was verified
 
 ## Files created
 
